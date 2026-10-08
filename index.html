@@ -1,0 +1,1129 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Струемер Стругацкого</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Dela+Gothic+One&family=Martian+Mono:wght@400;500&display=swap">
+<style>:root{color-scheme:light;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}img{max-width:100%}</style>
+<style>
+/* Layout: a comic strip pinned to a bathroom tile wall. Chunky inked panels in one column; the result panel leads with a cartoon scene where the recorded stream floods a target. */
+:root{
+  --tile:#CDEBF3; --grout:#E6F6FA; --panel:#FFFFFF; --ink:#1A1B3A; --muted:#4A4E70; --soft:#D5DCEC;
+  --pee:#FFCF33; --on-pee:#1A1B3A; --red:#F0564A; --stamp:#5A35C8; --shadow:#1A1B3A;
+  --ok:#17804D; --watch:#A8530B; --bad:#C0291F; --unk:#4A4E70;
+  --font-display:'Dela Gothic One','Arial Black',Impact,system-ui,sans-serif;
+  --font-body:'Balsamiq Sans','Comic Sans MS','Trebuchet MS',system-ui,sans-serif;
+  --font-data:'Martian Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --tile:#17223F; --grout:#101A31; --panel:#223058; --ink:#F6F1E3; --muted:#B4BEDD; --soft:#3B4A78;
+    --pee:#FFCF33; --on-pee:#1A1B3A; --red:#FF6B5E; --stamp:#C3B3FF; --shadow:#080D1C;
+    --ok:#5FD896; --watch:#FFB05C; --bad:#FF8E84; --unk:#B4BEDD;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --tile:#17223F; --grout:#101A31; --panel:#223058; --ink:#F6F1E3; --muted:#B4BEDD; --soft:#3B4A78;
+  --pee:#FFCF33; --on-pee:#1A1B3A; --red:#FF6B5E; --stamp:#C3B3FF; --shadow:#080D1C;
+  --ok:#5FD896; --watch:#FFB05C; --bad:#FF8E84; --unk:#B4BEDD;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;color:var(--ink);font:400 17px/1.45 var(--font-body);
+  background-color:var(--tile);
+  background-image:linear-gradient(var(--grout) 2px,transparent 2px),linear-gradient(90deg,var(--grout) 2px,transparent 2px);
+  background-size:46px 46px}
+.wrap{max-width:740px;margin-inline:auto;padding-inline:18px;padding-block:26px 64px;display:flex;flex-direction:column;gap:46px}
+:focus-visible{outline:3px solid var(--stamp);outline-offset:2px}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* type */
+h1{font:400 clamp(30px,9vw,60px)/1.02 var(--font-display);margin:0;text-wrap:balance;text-shadow:3px 3px 0 var(--pee);transform:rotate(-1.5deg);transform-origin:left center}
+h2{font:400 15px/1 var(--font-display);margin:0}
+h3{font:700 18px/1.3 var(--font-body);margin:0}
+p{margin:0}
+.label{font:500 11.5px/1.3 var(--font-data);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.note{color:var(--muted);font-size:15px;max-width:64ch}
+.sticker{display:inline-block;background:var(--ink);color:var(--panel);padding:9px 13px;border-radius:9px;transform:rotate(-1.5deg)}
+.sticker.tiny{font:500 11px/1.35 var(--font-data);letter-spacing:.05em;text-transform:uppercase;transform:none;align-self:flex-start;border-radius:7px;padding:7px 10px}
+
+/* header */
+.top{display:flex;flex-direction:column;gap:16px}
+.hello{display:flex;align-items:flex-end;gap:16px}
+.drop{flex:none;width:64px;height:78px}
+.drop .body{fill:var(--pee);stroke:var(--ink);stroke-width:3.5;stroke-linejoin:round}
+.drop .shine{fill:#FFF6DC}
+.drop .feat{fill:#1A1B3A}
+.drop .smile{fill:none;stroke:#1A1B3A;stroke-width:3;stroke-linecap:round}
+.bubble{position:relative;flex:1 1 auto;min-width:0;max-width:56ch;background:var(--panel);border:3px solid var(--ink);border-radius:18px;padding:12px 16px;box-shadow:4px 4px 0 var(--shadow)}
+.bubble::before,.bubble::after{content:"";position:absolute;bottom:14px;border-style:solid;border-color:transparent}
+.bubble::before{left:-17px;border-width:9px 17px 9px 0;border-right-color:var(--ink)}
+.bubble::after{left:-11px;bottom:16px;border-width:7px 13px 7px 0;border-right-color:var(--panel)}
+
+/* panels */
+.panel{position:relative;display:flex;flex-direction:column;gap:18px;min-width:0;background:var(--panel);border:3px solid var(--ink);border-radius:18px;padding:34px 18px 20px;box-shadow:6px 6px 0 var(--shadow)}
+.panel.flat{box-shadow:none;border-width:2px}
+.panel>h2{position:absolute;top:-17px;left:14px}
+.subhead{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap}
+
+/* measure */
+.steps{margin:0;padding:0;list-style:none;counter-reset:s;display:flex;flex-direction:column;gap:10px;max-width:64ch}
+.steps li{counter-increment:s;display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;align-items:start}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--pee);color:var(--on-pee);border:2.5px solid var(--ink);font:400 13px/1 var(--font-display)}
+.controls{display:flex;flex-wrap:wrap;gap:16px 20px;align-items:flex-end}
+.seg{border:0;padding:0;margin:0;min-width:0}
+.seg legend{padding:0;margin-bottom:6px}
+.seg-row{display:inline-flex;border:3px solid var(--ink);border-radius:12px;overflow:hidden;background:var(--panel)}
+.seg-row label,.chip-row label{position:relative;cursor:pointer}
+.seg-row input,.chip-row input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+.seg-row span{display:block;padding:10px 14px;font-weight:700}
+.seg-row label+label span{border-left:3px solid var(--ink)}
+.seg-row input:checked+span{background:var(--ink);color:var(--panel)}
+.seg-row input:focus-visible+span,.chip-row input:focus-visible+span{outline:3px solid var(--stamp);outline-offset:-4px}
+.chip-row{display:flex;flex-wrap:wrap;gap:8px}
+.chip-row span{display:block;padding:8px 14px;border:2.5px solid var(--ink);border-radius:999px;font-weight:700;background:var(--panel);line-height:1.2}
+.chip-row small{display:block;font:400 10.5px/1.3 var(--font-data);color:var(--muted)}
+.chip-row input:checked+span{background:var(--pee);color:var(--on-pee);box-shadow:3px 3px 0 var(--shadow)}
+.chip-row input:checked+span small{color:var(--on-pee)}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field input{font:500 16px var(--font-data);width:136px;padding:10px 12px;border:3px solid var(--ink);border-radius:12px;background:var(--panel);color:var(--ink)}
+.field input::placeholder{color:var(--muted);font-size:12px}
+.check{display:flex;align-items:center;gap:8px;font-size:16px;cursor:pointer;padding:10px 0;min-width:0}
+.check input{width:20px;height:20px;margin:0;flex:none;accent-color:var(--stamp)}
+.btn{font:700 17px/1.2 var(--font-body);padding:12px 20px;border-radius:14px;border:3px solid var(--ink);background:var(--pee);color:var(--on-pee);box-shadow:4px 4px 0 var(--shadow);cursor:pointer;transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--shadow)}
+.btn.alt{background:var(--panel);color:var(--ink);font-size:15px;padding:9px 14px}
+.btn:disabled{background:var(--panel);color:var(--muted);border-style:dashed;box-shadow:none;cursor:default;transform:none}
+.msg{font-size:15.5px;padding:10px 14px;border:2.5px solid var(--ink);border-radius:12px;background:var(--pee);color:var(--on-pee);max-width:64ch}
+.drop-on{outline:3px dashed var(--stamp);outline-offset:6px}
+.recbox{display:flex;align-items:center;gap:12px 14px;flex-wrap:wrap;padding:12px 14px;border:3px solid var(--ink);border-radius:14px}
+.recdot{flex:none;width:16px;height:16px;border-radius:50%;background:var(--red);border:2.5px solid var(--ink);animation:blink 1s steps(2) infinite}
+.rectime{font:500 20px/1 var(--font-data);font-variant-numeric:tabular-nums}
+.meter{flex:1 1 140px;min-width:100px;height:20px;border:2.5px solid var(--ink);border-radius:10px;overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--pee)}
+.btn.stop{background:var(--red);color:var(--on-pee)}
+@keyframes blink{50%{opacity:.25}}
+
+/* game scene: a self-contained illustration with its own fixed palette */
+.game{display:flex;flex-direction:column;gap:12px;min-width:0}
+.scene{display:block;width:100%;aspect-ratio:360/220;border:3px solid var(--ink);border-radius:14px;background:#E4F4F8}
+.caption{font-weight:700;font-size:18px;max-width:60ch}
+.game-controls{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:flex-end}
+
+/* result */
+.tag{font:500 11px/1 var(--font-data);letter-spacing:.06em;text-transform:uppercase;color:var(--on-pee);background:var(--pee);border:2px solid var(--ink);padding:5px 7px;border-radius:6px}
+.fname{font:400 12px/1.3 var(--font-data);color:var(--muted);overflow-wrap:anywhere;min-width:0}
+.paper{border:2px solid var(--ink);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.chart{position:relative;min-width:0}
+.chart svg{display:block;max-width:100%;touch-action:pan-y}
+.grid{stroke:var(--soft);stroke-width:1}
+.tick{fill:var(--muted);font:400 10.5px var(--font-data)}
+.ghost{stroke:var(--soft);stroke-width:2}
+.area{fill:var(--pee);fill-opacity:.9}
+.flowline{stroke:var(--ink);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.bound{stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 4}
+.peak{fill:var(--red);stroke:var(--ink);stroke-width:2.5}
+.plabel{fill:var(--ink);font:500 11.5px var(--font-data)}
+.cross{stroke:var(--ink);stroke-width:1.5;opacity:.5}
+.hv{fill:var(--ink);stroke:var(--panel);stroke-width:2}
+.tip{position:absolute;top:0;pointer-events:none;background:var(--ink);color:var(--panel);font:500 11.5px/1 var(--font-data);padding:6px 8px;border-radius:6px;white-space:nowrap}
+.trim{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 20px;border-top:2px dashed var(--soft);padding-top:12px}
+.trim div{display:flex;flex-direction:column;gap:4px;min-width:0}
+.trim label{display:flex;justify-content:space-between;gap:8px}
+.trim output{font:500 12px var(--font-data);color:var(--ink);font-variant-numeric:tabular-nums}
+.trim input{width:100%;accent-color:var(--stamp);margin:0}
+.trim .note{grid-column:1/-1;font-size:14px}
+
+.readout{display:flex;flex-wrap:wrap;gap:18px 28px;align-items:center}
+.stampbox{flex:0 1 auto;padding:8px 6px;min-width:0}
+.stamp{display:inline-block;font:400 clamp(16px,4.8vw,23px)/1.15 var(--font-display);letter-spacing:.03em;text-transform:uppercase;text-align:center;color:var(--stamp);border:4px double var(--stamp);border-radius:10px;padding:12px 16px;transform:rotate(-5deg);max-width:100%}
+@keyframes slam{0%{transform:rotate(-5deg) scale(1.8);opacity:0}60%{transform:rotate(-5deg) scale(.93);opacity:1}100%{transform:rotate(-5deg) scale(1)}}
+.stamp.hit{animation:slam .36s cubic-bezier(.2,.9,.3,1.2)}
+.verdict{flex:1 1 280px;min-width:0;display:flex;flex-direction:column;gap:8px;max-width:60ch}
+.verdict ul{margin:0;padding-left:18px;color:var(--muted);font-size:15px}
+.metrics{margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0 20px}
+.metrics div{border-top:2px dashed var(--soft);padding:10px 0;display:flex;flex-direction:column;gap:4px;min-width:0}
+.metrics dd{margin:0;font:500 18px/1.2 var(--font-data);font-variant-numeric:tabular-nums}
+.metrics dd small{font:400 12px var(--font-data);color:var(--muted)}
+.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+
+/* calibration */
+.calbar{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:5px;max-width:440px}
+.calbar span{height:20px;border:2.5px solid var(--ink);border-radius:6px}
+.calbar span.on{background:var(--pee)}
+#cal p{max-width:64ch}
+
+/* journal */
+.tablebox{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:8px 10px;border-top:2px dashed var(--soft);white-space:nowrap}
+th:first-child,td:first-child{text-align:left;padding-left:0}
+thead th{border-top:0;font:500 11.5px/1.3 var(--font-data);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+td{font:500 14px var(--font-data)}
+td:first-child{font:700 16px var(--font-body)}
+.journal{list-style:none;margin:0;padding:0}
+.row{display:grid;grid-template-columns:minmax(0,1.1fr) 96px minmax(0,1fr) minmax(0,1.3fr) auto;grid-template-areas:"when spark nums status del";gap:6px 14px;align-items:center;padding:12px 0;border-top:2px dashed var(--soft)}
+.when{grid-area:when;display:flex;flex-direction:column;min-width:0}
+.when .date{font:500 13px var(--font-data);font-variant-numeric:tabular-nums}
+.when .slot{color:var(--muted);font-size:15px}
+.spark{grid-area:spark;display:block}
+.spark .fill{fill:var(--pee);fill-opacity:.9}
+.spark .line{stroke:var(--ink);stroke-width:1.75;stroke-linejoin:round}
+.nums{grid-area:nums;font:500 13px/1.5 var(--font-data);font-variant-numeric:tabular-nums;display:flex;flex-direction:column;min-width:0}
+.nums span:last-child{color:var(--muted)}
+.status{grid-area:status;font-size:15px;font-weight:700;min-width:0}
+.tone-ok{color:var(--ok)} .tone-watch{color:var(--watch)} .tone-bad{color:var(--bad)} .tone-unk{color:var(--unk)}
+.del{grid-area:del;font:400 14px var(--font-body);background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;padding:6px 0}
+.del[data-armed]{color:var(--bad);font-weight:700}
+.empty{padding:14px 0;border-top:2px dashed var(--soft);color:var(--muted);max-width:60ch}
+@media (max-width:600px){
+  .row{grid-template-columns:minmax(0,1fr) 96px auto;grid-template-areas:"when spark del" "status nums nums"}
+  .nums{flex-direction:row;gap:10px;justify-content:flex-end}
+}
+
+/* trust */
+.trust ul{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px;max-width:64ch}
+.trust p{max-width:64ch}
+
+@media (prefers-reduced-motion: reduce){ .stamp.hit{animation:none} .btn{transition:none} .recdot{animation:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <span class="sticker tiny">Акустическая урофлоуметрия на коленке · собрано с Claude</span>
+    <h1>Струемер Стругацкого</h1>
+    <div class="hello">
+      <svg class="drop" viewBox="0 0 64 78" aria-hidden="true">
+        <path class="body" d="M32 4 C32 4 8 34 8 50 a24 24 0 0 0 48 0 C56 34 32 4 32 4 Z"/>
+        <ellipse class="shine" cx="21" cy="42" rx="4" ry="7" transform="rotate(20 21 42)"/>
+        <circle class="feat" cx="25" cy="52" r="3.4"/><circle class="feat" cx="41" cy="52" r="3.4"/>
+        <path class="smile" d="M25 61 Q33 68 41 61"/>
+      </svg>
+      <p class="bubble">Раньше к напору прислушивалась мама. Теперь я. Запиши на диктофон, как журчит: построю кривую, посчитаю время и перерывы, поставлю штамп и покажу, кого ты залил. Диагнозов не ставлю.</p>
+    </div>
+  </header>
+
+  <section class="panel" id="measure" aria-labelledby="h-measure">
+    <h2 class="sticker" id="h-measure">Новый замер</h2>
+    <ol class="steps" id="steps-file">
+      <li>Включи диктофон и положи телефон на бачок или полку рядом. Шумоподавление в диктофоне выключи, если оно есть.</li>
+      <li>Подожди две-три секунды тишины и начинай. Целься в воду: звук даёт вода, а не фаянс.</li>
+      <li>Закончил, ещё пара секунд тишины, стоп. Смывать после остановки записи.</li>
+      <li>Выбери файл записи здесь.</li>
+    </ol>
+    <ol class="steps" id="steps-mic" hidden>
+      <li>Нажми «Записать с микрофона», разреши доступ и положи телефон на бачок или полку рядом.</li>
+      <li>Подожди две-три секунды тишины и начинай. Целься в воду: звук даёт вода, а не фаянс.</li>
+      <li>Закончил, ещё пара секунд тишины, «Стоп». Смывать после.</li>
+    </ol>
+    <div class="controls">
+      <fieldset class="seg">
+        <legend class="label">Время суток</legend>
+        <div class="seg-row">
+          <label><input type="radio" name="slot" id="slot-morning" value="morning"><span>Утро</span></label>
+          <label><input type="radio" name="slot" id="slot-day" value="day"><span>День</span></label>
+          <label><input type="radio" name="slot" id="slot-evening" value="evening"><span>Вечер</span></label>
+        </div>
+      </fieldset>
+      <label class="field"><span class="label">Объём, мл</span>
+        <input id="volume" type="number" inputmode="numeric" min="20" max="1500" step="10" placeholder="если мерил">
+      </label>
+      <label class="check"><input type="checkbox" id="spot" checked> Мой туалет, телефон на обычном месте</label>
+      <button type="button" class="btn" id="rec" hidden>Записать с микрофона</button>
+      <button type="button" class="btn" id="pick">Выбрать запись</button>
+      <input class="vh" id="file" type="file" tabindex="-1" aria-hidden="true" accept="audio/*,.m4a,.mp3,.wav,.aac,.ogg,.opus,.flac">
+    </div>
+    <div class="recbox" id="recbox" hidden>
+      <span class="recdot" aria-hidden="true"></span>
+      <span class="rectime" id="rec-time" role="timer" aria-label="Идёт запись">0:00</span>
+      <div class="meter" aria-hidden="true"><i id="rec-level"></i></div>
+      <button type="button" class="btn stop" id="rec-stop">Стоп</button>
+    </div>
+    <p class="note">Объём необязателен. Со стаканом получаешь мл/с сразу и заодно калибруешь Струемер под себя: после десяти стаканов он считает мл/с сам. Галочку сними, если писал не там, где обычно.</p>
+    <p class="msg" id="msg" role="status" hidden></p>
+  </section>
+
+  <section class="panel" id="result" aria-labelledby="h-result">
+    <h2 class="sticker" id="h-result">Результат</h2>
+    <div class="subhead">
+      <span class="tag" id="tag">Пример</span>
+      <span class="fname" id="fname"></span>
+    </div>
+
+    <div class="game">
+      <canvas class="scene" id="scene" width="720" height="440" role="img" aria-label="Сцена: струя заливает мишень"></canvas>
+      <p class="caption" id="game-text" role="status"></p>
+      <div class="game-controls">
+        <fieldset class="seg">
+          <legend class="label">Мишень</legend>
+          <div class="chip-row">
+            <label><input type="radio" name="target" id="target-clock" value="clock" checked><span>Будильник <small>150 мл · 10 с</small></span></label>
+            <label><input type="radio" name="target" id="target-fire" value="fire"><span>Костёр <small>300 мл · 20 с</small></span></label>
+            <label><input type="radio" name="target" id="target-cand" value="cand"><span>Обещалкин <small>450 мл · 30 с</small></span></label>
+          </div>
+        </fieldset>
+        <button type="button" class="btn alt" id="replay">Пустить струю ещё раз</button>
+      </div>
+      <p class="note">Мишень считается залитой по миллилитрам, если объём известен, иначе по секундам потока. Обещалкин — выдуманный кандидат, все совпадения случайны.</p>
+    </div>
+
+    <div class="readout">
+      <div class="stampbox"><div class="stamp" id="stamp"></div></div>
+      <div class="verdict"><p id="vtext"></p><ul id="vnotes" hidden></ul></div>
+    </div>
+
+    <div class="paper">
+      <div class="chart" id="chart"></div>
+      <div class="trim">
+        <div><label class="label" for="w-start">Начало <output id="o-start" for="w-start"></output></label>
+          <input type="range" id="w-start" min="0" max="30" step="0.1" value="0"></div>
+        <div><label class="label" for="w-end">Конец <output id="o-end" for="w-end"></output></label>
+          <input type="range" id="w-end" min="0" max="30" step="0.1" value="30"></div>
+        <p class="note">Границы ставлю сам. Если в запись попал смыв или хлопок крышки, подвинь.</p>
+      </div>
+    </div>
+    <dl class="metrics" id="metrics"></dl>
+    <div class="actions">
+      <button type="button" class="btn" id="save" hidden>Сохранить в журнал</button>
+      <p class="note" id="save-note">Это пример на синтетической кривой. Свои замеры можно будет сохранять в журнал.</p>
+    </div>
+  </section>
+
+  <section class="panel flat" id="cal" aria-labelledby="h-cal">
+    <h2 class="sticker" id="h-cal">Личная калибровка</h2>
+    <div class="subhead"><span class="label" id="cal-count"></span></div>
+    <div class="calbar" id="cal-bar" role="img"></div>
+    <p id="cal-text"></p>
+    <p class="msg" id="cal-warn" hidden>Разброс большой. Скорее всего, телефон лежит по-разному или диктофон сам подкручивает громкость. Клади телефон в одно и то же место и выключи автоусиление, если оно есть.</p>
+    <p class="note">Калибровка действует там, где набрана: тот же туалет, телефон на том же месте. В зачёт идут замеры со стаканом от 100 мл, последние двадцать.</p>
+  </section>
+
+  <section class="panel flat" id="log" aria-labelledby="h-log">
+    <h2 class="sticker" id="h-log">Журнал</h2>
+    <p class="note" id="store-note">Открываю журнал…</p>
+    <div class="tablebox" id="summary" hidden></div>
+    <ul class="journal" id="journal"><li class="empty">Открываю журнал…</li></ul>
+  </section>
+
+  <section class="panel flat trust" aria-labelledby="h-trust">
+    <h2 class="sticker" id="h-trust">Чему тут верить</h2>
+    <ul>
+      <li>Времени, форме кривой и перерывам верить можно. Это микрофон слышит хорошо.</li>
+      <li>Миллилитрам в секунду верить осторожно. Они получаются из объёма (стакан или личная калибровка) и допущения, что громкость пропорциональна потоку. Калибровка честно показывает свой разброс.</li>
+      <li>Сравнивать замеры между собой стоит только в одном и том же туалете, с телефоном на одном и том же месте.</li>
+      <li>Про простату звук не говорит ничего. Слабая струя бывает по многим причинам, а ранний рак простаты струю обычно не меняет.</li>
+      <li>Мишени тем более ничего не значат. Это игра.</li>
+    </ul>
+    <h3>Когда идти к урологу, а не к Струемеру</h3>
+    <p>Слабая или прерывистая струя держится неделями. Встаёшь ночью два раза и чаще. Кровь в моче, боль или жжение. Не получается помочиться совсем: это срочно, в тот же день.</p>
+    <p class="note">Для масштаба: млекопитающие тяжелее 3 кг опорожняют пузырь в среднем за 21 секунду, плюс-минус 13 (Yang et al., PNAS, 2014). Струемер это игрушка, а не медицинский прибор.</p>
+  </section>
+</div>
+
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const DT = 0.05;
+const LS_KEY = 'struemer.journal.v1', LS_TARGET = 'struemer.target';
+const SLOT = { morning: 'Утро', day: 'День', evening: 'Вечер' };
+const VERDICT = {
+  unheard:  { stamp: 'Не расслышал',   tone: 'unk',   mark: '○' },
+  lowvol:   { stamp: 'Мало налито',    tone: 'unk',   mark: '○' },
+  breaks:   { stamp: 'С перерывами',   tone: 'watch', mark: '▲' },
+  strong:   { stamp: 'Напор годный',   tone: 'ok',    mark: '●' },
+  mid:      { stamp: 'Напор так себе', tone: 'watch', mark: '▲' },
+  weak:     { stamp: 'Напор слабый',   tone: 'bad',   mark: '■' },
+  long:     { stamp: 'Долго',          tone: 'watch', mark: '▲' },
+  hitch:    { stamp: 'С заминкой',     tone: 'watch', mark: '▲' },
+  plateau:  { stamp: 'Плато',          tone: 'watch', mark: '▲' },
+  shape_ok: { stamp: 'Форма в норме',  tone: 'ok',    mark: '●' }
+};
+const TARGETS = {
+  clock: { name: 'Будильник', ml: 150, sec: 10 },
+  fire:  { name: 'Костёр',    ml: 300, sec: 20 },
+  cand:  { name: 'Обещалкин', ml: 450, sec: 30 }
+};
+const num = (v, d = 1) => Number(v).toLocaleString('ru-RU', { minimumFractionDigits: d, maximumFractionDigits: d });
+const r2 = v => Math.round(v * 100) / 100;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const CAL_MIN = 3, CAL_FULL = 10;
+const pct = x => Math.round(x * 100);
+const round10 = v => Math.round(v / 10) * 10;
+function plural(n, one, few, many) { const d = n % 10, h = n % 100; return (d === 1 && h !== 11) ? one : (d >= 2 && d <= 4 && !(h >= 12 && h <= 14)) ? few : many; }
+const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+const state = { cur: null, entries: [], mode: 'pending', loaded: false, col: null, slotTouched: false, cal: { n: 0, K: null, spread: null, ready: false } };
+
+/* ---------- signal ---------- */
+function median5(a) {
+  const n = a.length, o = new Float32Array(n), w = [0, 0, 0, 0, 0];
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < 5; j++) w[j] = a[Math.min(n - 1, Math.max(0, i + j - 2))];
+    w.sort((x, y) => x - y);
+    o[i] = w[2];
+  }
+  return o;
+}
+function movAvg(a, w) {
+  const n = a.length, o = new Float32Array(n), h = Math.floor(w / 2), ps = new Float64Array(n + 1);
+  for (let i = 0; i < n; i++) ps[i + 1] = ps[i] + a[i];
+  for (let i = 0; i < n; i++) {
+    const lo = Math.max(0, i - h), hi = Math.min(n, i + h + 1);
+    o[i] = (ps[hi] - ps[lo]) / (hi - lo);
+  }
+  return o;
+}
+/* Frame power (50 ms) -> noise-subtracted, smoothed amplitude envelope. */
+function envelopeFromSamples(x, sr) {
+  const hop = Math.round(sr * DT), n = Math.floor(x.length / hop), p = new Float32Array(n);
+  for (let i = 0; i < n; i++) {
+    let s = 0; const o = i * hop;
+    for (let j = 0; j < hop; j++) { const v = x[o + j]; s += v * v; }
+    p[i] = s / hop;
+  }
+  const sorted = Float32Array.from(p).sort();
+  const q = f => sorted[Math.min(n - 1, Math.floor(f * n))];
+  const p10 = q(0.10), p95 = q(0.95);
+  const noSilence = !(p95 > p10 * 6);
+  const noise = noSilence ? 0 : p10 * 1.5;
+  const a = new Float32Array(n);
+  for (let i = 0; i < n; i++) a[i] = Math.sqrt(Math.max(0, p[i] - noise));
+  /* amp (1 s smoothing) draws the curve and gives the peak; fine (0.35 s) is what pauses are counted on. */
+  const med = median5(a);
+  return { amp: movAvg(med, 21), fine: movAvg(med, 7), duration: n * DT, noSilence };
+}
+/* Find the stream: the heaviest run above 5% of peak, plus neighbours closer than 6 s. */
+function autoWindow(env) {
+  const a = env.amp, n = a.length;
+  let peak = 0; for (let i = 0; i < n; i++) if (a[i] > peak) peak = a[i];
+  if (!(peak > 0)) return { s: 0, e: n };
+  const thr = peak * 0.05, runs = [];
+  let st = -1;
+  for (let i = 0; i <= n; i++) {
+    const on = i < n && a[i] > thr;
+    if (on && st < 0) st = i;
+    if (!on && st >= 0) { runs.push([st, i]); st = -1; }
+  }
+  const minLen = Math.round(0.8 / DT);
+  let R = runs.filter(r => r[1] - r[0] >= minLen);
+  if (!R.length) R = runs;
+  let best = -1, bi = 0;
+  R.forEach((r, k) => { let s = 0; for (let i = r[0]; i < r[1]; i++) s += a[i]; if (s > best) { best = s; bi = k; } });
+  let lo = bi, hi = bi; const maxGap = Math.round(6 / DT);
+  while (lo > 0 && R[lo][0] - R[lo - 1][1] <= maxGap) lo--;
+  while (hi < R.length - 1 && R[hi + 1][0] - R[hi][1] <= maxGap) hi++;
+  return { s: R[lo][0], e: R[hi][1] };
+}
+/* ICS terms: voiding time includes pauses, flow time does not; Qave = volume / flow time.
+   With a cup: k = volume / area (ml per amplitude-second). Without one, a personal K from earlier cups stands in. */
+function measure(env, s, e, volume, K) {
+  const a = env.amp; let peak = 0, ip = s;
+  for (let i = s; i < e; i++) if (a[i] > peak) { peak = a[i]; ip = i; }
+  const voidTime = (e - s) * DT;
+  if (!(peak > 0)) return { ok: false, voidTime, flowTime: 0, breaks: 0 };
+  const thr = peak * 0.05, fa = env.fine || a;
+  let active = 0, area = 0, breaks = 0, gap = 0, seen = false;
+  for (let i = s; i < e; i++) {
+    area += a[i] * DT;
+    if (fa[i] > thr) { if (seen && gap * DT >= 0.4) breaks++; gap = 0; seen = true; active++; }
+    else if (seen) gap++;
+  }
+  const flowTime = active * DT;
+  const m = { ok: true, voidTime, flowTime, tPeak: (ip - s) * DT, ip, breaks, fullness: (area / flowTime) / peak, peak, area, volume: null, qmax: null, qave: null, k: null, est: false };
+  if (volume > 0) { m.volume = volume; m.k = volume / area; }
+  else if (K > 0) { m.volume = K * area; m.est = true; }
+  if (m.volume) { m.qmax = peak * m.volume / area; m.qave = m.volume / flowTime; }
+  return m;
+}
+function times(n) { return plural(n, 'раз', 'раза', 'раз'); }
+function judge(m, env) {
+  const notes = [];
+  if (env.noSilence) notes.push('В записи не слышно тишины до и после. Начало и конец могли обрезаться, проверь границы.');
+  let code, text;
+  const v = m.volume, est = m.est, cal = state.cal, c = state.cur;
+  if (!m.ok || m.voidTime < 4 || m.flowTime < 3) {
+    code = 'unheard'; text = 'Струю почти не слышно. Положи телефон ближе, целься в воду и запиши ещё раз.';
+  } else if (v && v < 150) {
+    code = 'lowvol'; text = (est ? 'По личной калибровке вышло около ' + num(round10(v), 0) + ' мл.' : 'Объём ' + num(v, 0) + ' мл.') + ' При объёме меньше 150 мл кривую не оценивают даже в клинике. Приходи с полным пузырём.';
+  } else if (m.breaks >= 2) {
+    code = 'breaks'; text = 'Струя прерывалась ' + m.breaks + ' ' + times(m.breaks) + '. Разово бывает у всех: отвлёкся, тужился, сменил прицел. Если так в каждом замере, покажи журнал урологу.';
+  } else if (v) {
+    const q = num(m.qmax), lead = est ? 'По личной калибровке Qmax около ' + q + ' мл/с.' : 'Оценка Qmax ' + q + ' мл/с.';
+    if (m.qmax >= 15) { code = 'strong'; text = lead + ' Ориентир для мужчин при объёме от 150 мл: выше 15 считается нормой.'; }
+    else if (m.qmax >= 10) { code = 'mid'; text = lead + ' Это серая зона от 10 до 15. Смотри на тренд по журналу, а не на один замер.'; }
+    else { code = 'weak'; text = lead + ' Это ниже 10. Один замер ничего не доказывает: микрофон и диктофон могли соврать. Повтори несколько раз на полном пузыре. Если повторяется, покажи журнал урологу, там измерят прибором.'; }
+    if (m.breaks === 1) notes.push('Была одна пауза посреди струи.');
+  } else if (m.voidTime > 60) {
+    code = 'long'; text = num(m.voidTime, 0) + ' секунд. Это либо очень полный пузырь, либо слабый поток, по звуку не отличить. Измерь объём мерным стаканом, тогда посчитаю мл/с.';
+  } else if (m.breaks === 1) {
+    code = 'hitch'; text = 'Одна пауза посреди струи. Сама по себе ничего не значит. Интересно, повторится ли.';
+  } else if (m.fullness >= 0.8 && m.voidTime >= 30) {
+    code = 'plateau'; text = 'Кривая длинная и плоская, без выраженного пика. Так бывает при сужении на выходе, а бывает из-за шумоподавления в диктофоне. Измерь объём, чтобы получить мл/с.';
+  } else {
+    code = 'shape_ok'; text = 'Кривая поднимается, держится и спадает без провалов. Напор в мл/с не скажу, пока не укажешь объём.';
+  }
+  if (m.ok && est) notes.push('Мл/с посчитаны без стакана, по личной калибровке: ' + cal.n + ' ' + plural(cal.n, 'замер', 'замера', 'замеров') + ', разброс ±' + pct(cal.spread) + '%.');
+  if (m.ok && !est && v && cal.ready && c && !c.example && !c.saved && $('spot').checked) {
+    const pred = cal.K * m.area;
+    notes.push('Калибровка предсказала бы ' + num(round10(pred), 0) + ' мл, в стакане ' + num(v, 0) + '. Расхождение ' + pct(Math.abs(pred - v) / v) + '%.');
+  }
+  return { code, text, notes };
+}
+function compactCurve(env, s, e, peak, N) {
+  const out = [], a = env.amp, len = Math.max(1, e - s);
+  for (let k = 0; k < N; k++) out.push(r2(a[s + Math.min(len - 1, Math.floor(k * len / N))] / (peak || 1)));
+  return out;
+}
+function exampleEnv() {
+  const T = 32, n = Math.round(T / DT), raw = new Float32Array(n);
+  for (let i = 0; i < n; i++) {
+    const t = i * DT, u = (t - 3) / 24.5;
+    if (u > 0 && u < 1) raw[i] = Math.pow(u, 0.9) * Math.pow(1 - u, 1.5) * (1 + 0.05 * Math.sin(t * 5.1) + 0.03 * Math.sin(t * 13.7));
+  }
+  return { amp: movAvg(raw, 21), fine: movAvg(raw, 7), duration: T, noSilence: false };
+}
+
+/* ---------- decode ---------- */
+async function decodeFile(file) {
+  const AC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+  if (!AC) throw new Error('nosupport');
+  const bytes = await file.arrayBuffer();
+  const probe = new AC(1, 1, 44100);
+  let buf;
+  try {
+    buf = await new Promise((res, rej) => { const p = probe.decodeAudioData(bytes, res, rej); if (p && p.catch) p.catch(rej); });
+  } catch (_) { throw new Error('format'); }
+  if (!buf || buf.duration < 3) throw new Error('tooshort');
+  if (buf.duration > 300) throw new Error('toolong');
+  /* 400 Hz - 6 kHz: drops room rumble and handling thumps, keeps the splash band. */
+  const off = new AC(1, buf.length, buf.sampleRate);
+  const src = off.createBufferSource(); src.buffer = buf;
+  const hp = off.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 400;
+  const lp = off.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 6000;
+  src.connect(hp); hp.connect(lp); lp.connect(off.destination); src.start(0);
+  const out = await new Promise((res, rej) => {
+    off.oncomplete = ev => res(ev.renderedBuffer);
+    const p = off.startRendering(); if (p && p.then) p.then(res, rej);
+  });
+  return envelopeFromSamples(out.getChannelData(0), out.sampleRate);
+}
+
+/* ---------- result view ---------- */
+function say(text) { const el = $('msg'); el.textContent = text || ''; el.hidden = !text; }
+function slotFor(d) { const h = d.getHours(); return (h >= 4 && h < 11) ? 'morning' : (h >= 11 && h < 17) ? 'day' : 'evening'; }
+function setSlot(s) { const el = $('slot-' + s); if (el) el.checked = true; }
+function getSlot() { const el = document.querySelector('input[name="slot"]:checked'); return el ? el.value : 'day'; }
+function currentVolume() {
+  const c = state.cur; if (c.example) return c.exVolume;
+  const v = parseFloat($('volume').value); return v > 0 ? v : null;
+}
+function show(env, opts) {
+  const w = autoWindow(env);
+  state.cur = { env, s: w.s, e: w.e, example: !!opts.example, exVolume: opts.volume || null, name: opts.name || '', ts: opts.ts || Date.now(), saved: false };
+  const ws = $('w-start'), we = $('w-end'), max = env.duration.toFixed(1);
+  ws.max = max; we.max = max; ws.value = (w.s * DT).toFixed(1); we.value = (w.e * DT).toFixed(1);
+  refresh();
+}
+function refresh() {
+  const c = state.cur; if (!c) return;
+  const useCal = !c.example && state.cal.ready && $('spot').checked;
+  c.m = measure(c.env, c.s, c.e, currentVolume(), useCal ? state.cal.K : 0);
+  c.v = judge(c.m, c.env);
+  /* cumulative share of the stream, for the scene's fill level */
+  const len = Math.max(1, c.e - c.s), cum = new Float32Array(len); let acc = 0;
+  for (let i = 0; i < len; i++) { acc += c.env.amp[c.s + i]; cum[i] = acc; }
+  if (acc > 0) for (let i = 0; i < len; i++) cum[i] /= acc;
+  c.cum = cum;
+  stopScene(); drawScene(1); renderGame();
+  drawChart(); renderReadout();
+}
+function renderReadout() {
+  const c = state.cur, m = c.m, v = c.v, V = VERDICT[v.code];
+  $('o-start').textContent = num(c.s * DT) + ' с';
+  $('o-end').textContent = num(c.e * DT) + ' с';
+  $('tag').hidden = !c.example;
+  $('fname').textContent = c.example ? 'синтетическая кривая, объём 320 мл' : c.name;
+  const st = $('stamp');
+  st.textContent = V.stamp;
+  if (st.dataset.code !== v.code) {
+    const first = !st.dataset.code; st.dataset.code = v.code;
+    if (!first) { st.classList.remove('hit'); void st.offsetWidth; st.classList.add('hit'); }
+  }
+  $('vtext').textContent = v.text;
+  const ul = $('vnotes'); ul.hidden = !v.notes.length;
+  ul.innerHTML = v.notes.map(t => '<li>' + esc(t) + '</li>').join('');
+  const need = '<small>нужен объём</small>', ap = m.est ? '≈ ' : '';
+  const rows = [
+    ['Время мочеиспускания', num(m.voidTime) + ' с'],
+    ['Время потока', num(m.flowTime) + ' с'],
+    ['До максимума', m.ok ? num(m.tPeak) + ' с' : '—'],
+    ['Перерывы', String(m.breaks)],
+    ['Объём', m.volume ? ap + num(m.est ? round10(m.volume) : m.volume, 0) + ' <small>мл' + (m.est ? ', калибровка' : '') + '</small>' : need],
+    ['Qmax', m.qmax != null ? ap + num(m.qmax) + ' <small>мл/с</small>' : need],
+    ['Qave', m.qave != null ? ap + num(m.qave) + ' <small>мл/с</small>' : need],
+    ['Qave / Qmax', m.ok ? num(m.fullness, 2) : '—']
+  ];
+  $('metrics').innerHTML = rows.map(r => '<div><dt class="label">' + r[0] + '</dt><dd>' + r[1] + '</dd></div>').join('');
+  const save = $('save'), note = $('save-note');
+  save.hidden = c.example; note.hidden = !c.example;
+  save.disabled = c.saved || v.code === 'unheard';
+  save.textContent = c.saved ? 'Сохранено' : 'Сохранить в журнал';
+}
+
+/* ---------- scene: the recorded stream replays against a target ---------- */
+const SW = 360, SH = 220, FLOOR = 204, FULL = 140, TX = 236;
+const INK = '#1A1B3A', PEE = '#FFCF33', RED = '#F0564A', CREAM = '#FFF6DC', STEEL = '#C9D3E6', WALL = '#E4F4F8', GROUT = '#CBE6EE', FLOORC = '#B9D9E4';
+const scene = { target: 'clock', raf: 0 };
+function gameState() {
+  const m = state.cur.m, T = TARGETS[scene.target];
+  if (!m.ok) return { ok: false, ratio: 0, T };
+  const byMl = !!m.volume, ratio = byMl ? m.volume / T.ml : m.flowTime / T.sec;
+  return { ok: true, byMl, ratio, win: ratio >= 1, T };
+}
+function sceneAt(p) {
+  const c = state.cur, gs = gameState();
+  if (!gs.ok) return { frac: 0, flow: 0 };
+  const len = c.cum.length, j = Math.min(len - 1, Math.floor(p * len));
+  return { frac: c.cum[j] * Math.min(1.1, gs.ratio), flow: p >= 1 ? 0 : c.env.amp[c.s + j] / c.m.peak };
+}
+function rr(g, x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
+function disc(g, x, y, r) { g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); }
+function paint(g, fill) { g.fillStyle = fill; g.fill(); g.stroke(); }
+function face(g, x, y, mood, sp) {
+  g.save(); g.strokeStyle = INK; g.lineWidth = 2.5; g.lineCap = 'round';
+  for (const s of [-1, 1]) {
+    const ex = x + s * sp;
+    if (mood === 2) { g.beginPath(); g.moveTo(ex - 3.5, y - 3.5); g.lineTo(ex + 3.5, y + 3.5); g.moveTo(ex + 3.5, y - 3.5); g.lineTo(ex - 3.5, y + 3.5); g.stroke(); }
+    else if (mood === 1) { disc(g, ex, y, 5); g.fillStyle = '#FFFFFF'; g.fill(); g.stroke(); disc(g, ex, y + 1, 1.9); g.fillStyle = INK; g.fill(); }
+    else { disc(g, ex, y, 2.8); g.fillStyle = INK; g.fill(); g.beginPath(); g.moveTo(ex - s * 5, y - 6); g.lineTo(ex + s * 4, y - 9.5); g.stroke(); }
+  }
+  g.beginPath();
+  if (mood === 0) g.arc(x, y + 6, 7, Math.PI * 0.15, Math.PI * 0.85);
+  else if (mood === 1) g.arc(x, y + 12, 3.5, 0, Math.PI * 2);
+  else { g.moveTo(x - 7, y + 12); g.quadraticCurveTo(x - 3.5, y + 8, x, y + 12); g.quadraticCurveTo(x + 3.5, y + 16, x + 7, y + 12); }
+  g.stroke(); g.restore();
+}
+function sfx(g, x, y, text) {
+  g.save(); g.font = '400 14px "Dela Gothic One","Arial Black",sans-serif'; g.textAlign = 'center';
+  g.lineWidth = 4; g.strokeStyle = '#FFFFFF'; g.lineJoin = 'round'; g.strokeText(text, x, y); g.fillStyle = INK; g.fillText(text, x, y); g.restore();
+}
+function drawClock(g, mood, now) {
+  const cx = TX, cy = FLOOR - 54, jig = mood === 0 ? Math.sin(now / 45) * 1.5 : 0;
+  g.beginPath(); g.moveTo(cx - 22, cy + 30); g.lineTo(cx - 32, FLOOR - 3); g.moveTo(cx + 22, cy + 30); g.lineTo(cx + 32, FLOOR - 3); g.stroke();
+  for (const s of [-1, 1]) { disc(g, cx + s * 27 + jig, cy - 37, 13); paint(g, STEEL); }
+  g.beginPath(); g.moveTo(cx, cy - 38); g.lineTo(cx + jig * 2, cy - 54); g.stroke();
+  disc(g, cx + jig * 2, cy - 57, 4.5); paint(g, STEEL);
+  disc(g, cx, cy, 40); paint(g, RED);
+  disc(g, cx, cy, 30); paint(g, CREAM);
+  face(g, cx, cy - 4, mood, 11);
+  if (mood === 0) {
+    g.save(); g.lineWidth = 2.5;
+    for (const s of [-1, 1]) for (const r of [21, 28]) { g.beginPath(); if (s < 0) g.arc(cx - 27, cy - 37, r, Math.PI * 1.02, Math.PI * 1.3); else g.arc(cx + 27, cy - 37, r, Math.PI * 1.7, Math.PI * 1.98); g.stroke(); }
+    g.restore();
+  }
+}
+function flamePath(g, w, h) {
+  g.beginPath(); g.moveTo(0, 0);
+  g.bezierCurveTo(-w * 1.1, 0, -w * 1.05, -h * 0.5, -w * 0.2, -h * 0.72);
+  g.quadraticCurveTo(-w * 0.05, -h * 0.88, w * 0.05, -h);
+  g.bezierCurveTo(w * 0.25, -h * 0.72, w * 1.1, -h * 0.55, w, -h * 0.22);
+  g.bezierCurveTo(w * 0.95, -h * 0.05, w * 0.5, 0, 0, 0);
+  g.closePath();
+}
+function drawFire(g, frac, mood, now) {
+  const cx = TX;
+  for (const a of [-0.28, 0.28]) { g.save(); g.translate(cx, FLOOR - 13); g.rotate(a); rr(g, -40, -8, 80, 16, 8); paint(g, '#A9683A'); g.restore(); }
+  if (mood === 2) return;
+  const s = 1 - 0.72 * Math.min(1, frac), fl = 1 + 0.05 * Math.sin(now / 90);
+  g.save(); g.translate(cx, FLOOR - 20); g.scale(s * fl, s / fl); g.lineWidth = 3 / s;
+  flamePath(g, 36, 100); paint(g, RED);
+  flamePath(g, 21, 58); g.fillStyle = PEE; g.fill();
+  g.restore();
+  if (s > 0.5) face(g, cx + 1, FLOOR - 20 - 30 * s, mood, 9 * s);
+}
+function drawSmoke(g, levelY, now) {
+  for (let j = 0; j < 3; j++) {
+    const ph = ((now / 1400) + j / 3) % 1;
+    disc(g, TX + 10 + j * 12 + 4 * Math.sin(now / 300 + j), levelY - 10 - ph * 30, 7 + 3 * ph);
+    g.globalAlpha = 1 - ph * 0.6; paint(g, STEEL); g.globalAlpha = 1;
+  }
+}
+function drawHat(g, x, y, rot) {
+  g.save(); g.translate(x, y); g.rotate(rot);
+  rr(g, -15, -17, 30, 17, 3); paint(g, CREAM);
+  rr(g, -15, -8, 30, 6, 1); paint(g, RED);
+  rr(g, -25, -3, 50, 7, 3.5); paint(g, CREAM);
+  g.restore();
+}
+function drawCand(g, mood, now) {
+  const cx = TX, hy = FLOOR - 104;
+  rr(g, cx - 25, FLOOR - 90, 50, 46, 12); paint(g, '#2A9D8F');
+  g.beginPath(); g.moveTo(cx, FLOOR - 88); g.lineTo(cx - 5, FLOOR - 76); g.lineTo(cx, FLOOR - 66); g.lineTo(cx + 5, FLOOR - 76); g.closePath(); paint(g, RED);
+  if (mood < 2) {
+    g.beginPath(); g.moveTo(cx + 22, FLOOR - 76); g.lineTo(cx + 36, FLOOR - 92); g.stroke();
+    g.beginPath(); g.moveTo(cx + 29, FLOOR - 98); g.lineTo(cx + 29, FLOOR - 89); g.lineTo(cx + 56, FLOOR - 80); g.lineTo(cx + 56, FLOOR - 109); g.closePath(); paint(g, RED);
+    if (mood === 0) {
+      g.save(); g.lineWidth = 2.5;
+      for (const r of [8, 15]) { g.beginPath(); g.arc(cx + 58, FLOOR - 94, r + 1.5 * Math.sin(now / 120), -Math.PI * 0.3, Math.PI * 0.3); g.stroke(); }
+      g.restore();
+    }
+  }
+  disc(g, cx, hy, 18); paint(g, '#FFD9B8');
+  face(g, cx, hy - 2, mood, 7);
+  if (mood < 2) drawHat(g, cx, hy - 14, -0.08);
+  g.beginPath(); g.moveTo(cx - 40, FLOOR - 58); g.lineTo(cx + 40, FLOOR - 58); g.lineTo(cx + 34, FLOOR - 2); g.lineTo(cx - 34, FLOOR - 2); g.closePath(); paint(g, '#7A5AF8');
+  rr(g, cx - 45, FLOOR - 67, 90, 11, 4); paint(g, '#5A35C8');
+  disc(g, cx, FLOOR - 30, 12); paint(g, CREAM);
+  g.beginPath(); g.moveTo(cx - 5, FLOOR - 30); g.lineTo(cx - 1, FLOOR - 25); g.lineTo(cx + 6, FLOOR - 36); g.stroke();
+  if (mood < 2) {
+    const text = mood === 0 ? 'Обещаю!' : 'Э-э…';
+    g.save(); g.font = '700 13px "Balsamiq Sans","Comic Sans MS",sans-serif';
+    const tw = g.measureText(text).width, bx = Math.min(SW - tw - 26, cx + 30), by = FLOOR - 158;
+    rr(g, bx, by, tw + 20, 26, 11); paint(g, '#FFFFFF');
+    g.beginPath(); g.moveTo(bx + 12, by + 25); g.lineTo(bx + 8, by + 37); g.lineTo(bx + 24, by + 25); g.fillStyle = '#FFFFFF'; g.fill(); g.stroke();
+    g.fillStyle = '#FFFFFF'; g.fillRect(bx + 12, by + 21, 12, 4.5);
+    g.fillStyle = INK; g.textBaseline = 'middle'; g.fillText(text, bx + 10, by + 13.5);
+    g.restore();
+  }
+}
+function drawLiquid(g, levelY, now, calm) {
+  if (levelY >= FLOOR - 1) return;
+  const amp = calm ? 1.2 : 2.8, wave = x => levelY + amp * Math.sin(x / 17 + now / 260);
+  g.beginPath(); g.moveTo(0, FLOOR);
+  for (let x = 0; x <= SW; x += 6) g.lineTo(x, wave(x));
+  g.lineTo(SW, FLOOR); g.closePath();
+  g.globalAlpha = 0.72; g.fillStyle = PEE; g.fill(); g.globalAlpha = 1;
+  g.beginPath(); for (let x = 0; x <= SW; x += 6) { if (x) g.lineTo(x, wave(x)); else g.moveTo(x, wave(x)); }
+  g.stroke();
+}
+function drawBubbles(g, levelY, now) {
+  g.save(); g.lineWidth = 2;
+  for (let j = 0; j < 4; j++) {
+    const ph = ((now / 1100) + j * 0.27) % 1, y0 = FLOOR - 70;
+    disc(g, TX - 20 + j * 13 + 3 * Math.sin(now / 240 + j * 2), y0 + (levelY + 10 - y0) * ph, 2.5 + (j % 2) * 1.5); g.stroke();
+  }
+  g.restore();
+}
+function drawStream(g, levelY, flow, now) {
+  if (flow < 0.05) return;
+  const w = 3 + 9 * flow, lx = 104 + 3 * Math.sin(now / 130), ly = Math.min(FLOOR - 2, levelY + 2);
+  const path = () => { g.beginPath(); g.moveTo(20, -10); g.quadraticCurveTo(94, 4, lx, ly); };
+  g.save(); g.lineCap = 'round';
+  path(); g.strokeStyle = INK; g.lineWidth = w + 5; g.stroke();
+  path(); g.strokeStyle = PEE; g.lineWidth = w; g.stroke();
+  g.strokeStyle = INK; g.lineWidth = 2;
+  for (let j = 0; j < 3; j++) {
+    const ph = (now / 240 + j / 3) % 1;
+    disc(g, lx + (j - 1) * (5 + 16 * ph), ly - 3 - 44 * ph * (1 - ph), 3.4 - 1.4 * ph); paint(g, PEE);
+  }
+  g.restore();
+}
+function drawScene(p) {
+  const cv = $('scene'), c = state.cur; if (!c || !c.m || !c.cum) return;
+  const cssW = cv.clientWidth || SW, dpr = Math.min(2, window.devicePixelRatio || 1);
+  const bw = Math.round(cssW * dpr), bh = Math.round(cssW * SH / SW * dpr);
+  if (cv.width !== bw || cv.height !== bh) { cv.width = bw; cv.height = bh; }
+  const g = cv.getContext('2d'), k = bw / SW;
+  g.setTransform(k, 0, 0, k, 0, 0);
+  const now = scene.raf ? performance.now() : 4000;
+  const st = sceneAt(p), levelY = FLOOR - st.frac * FULL, mood = st.frac >= 1 ? 2 : st.frac >= 0.55 ? 1 : 0;
+  g.fillStyle = WALL; g.fillRect(0, 0, SW, SH);
+  g.strokeStyle = GROUT; g.lineWidth = 2; g.beginPath();
+  for (let x = 40; x < SW; x += 40) { g.moveTo(x, 0); g.lineTo(x, FLOOR); }
+  for (let y = 44; y < FLOOR; y += 40) { g.moveTo(0, y); g.lineTo(SW, y); }
+  g.stroke();
+  g.fillStyle = FLOORC; g.fillRect(0, FLOOR, SW, SH - FLOOR);
+  g.strokeStyle = INK; g.lineWidth = 3; g.lineJoin = 'round'; g.lineCap = 'round';
+  g.beginPath(); g.moveTo(0, FLOOR); g.lineTo(SW, FLOOR); g.stroke();
+  if (scene.target === 'clock') drawClock(g, mood, now);
+  else if (scene.target === 'fire') drawFire(g, st.frac, mood, now);
+  else drawCand(g, mood, now);
+  g.strokeStyle = INK; g.lineWidth = 3;
+  drawLiquid(g, levelY, now, p >= 1);
+  if (mood === 2) {
+    if (scene.target === 'fire') { drawSmoke(g, levelY, now); sfx(g, TX + 88, levelY - 20, 'пшшш'); }
+    else {
+      drawBubbles(g, levelY, now);
+      if (scene.target === 'cand') drawHat(g, TX + 10 + 3 * Math.sin(now / 420), levelY + 3, 0.2);
+      sfx(g, TX + 62, levelY + 34, 'буль');
+    }
+  }
+  drawStream(g, levelY, st.flow, now);
+  g.save(); g.font = '400 15px "Dela Gothic One","Arial Black",sans-serif'; g.textAlign = 'left';
+  const hud = 'Залито ' + Math.min(100, Math.round(st.frac * 100)) + '%';
+  g.lineWidth = 4; g.strokeStyle = '#FFFFFF'; g.strokeText(hud, 126, 24); g.fillStyle = INK; g.fillText(hud, 126, 24); g.restore();
+}
+function stopScene() { if (scene.raf) { cancelAnimationFrame(scene.raf); scene.raf = 0; } }
+function playScene() {
+  stopScene();
+  const c = state.cur; if (!c || !c.m) return;
+  if (reducedMotion() || !c.m.ok) { drawScene(1); return; }
+  const dur = Math.min(6500, Math.max(2600, c.m.voidTime * 220)), t0 = performance.now();
+  const step = t => {
+    const p = Math.min(1, Math.max(0, (t - t0) / dur));
+    if (p < 1) { drawScene(p); scene.raf = requestAnimationFrame(step); }
+    else { scene.raf = 0; drawScene(1); }
+  };
+  scene.raf = requestAnimationFrame(step);
+}
+function renderGame() {
+  const c = state.cur, m = c.m, gs = gameState(), T = gs.T;
+  let t;
+  if (!gs.ok) t = 'Мишень сухая. Нужна запись, на которой слышно струю.';
+  else {
+    const have = gs.byMl ? (m.est ? 'около ' + num(round10(m.volume), 0) : num(m.volume, 0)) + ' мл' : num(m.flowTime) + ' с потока';
+    const need = gs.byMl ? T.ml + ' мл' : T.sec + ' с потока';
+    const pc = Math.min(99, Math.floor(gs.ratio * 100));
+    if (scene.target === 'clock') t = gs.win ? 'Будильник утоплен и больше не звонит: ' + have + ' при норме ' + need + '.' : 'Будильник отзвонил своё: залито ' + pc + '%, нужно ' + need + '.';
+    else if (scene.target === 'fire') t = gs.win ? 'Костёр потушен, лес спасён: ' + have + ' при норме ' + need + '.' : 'Костёр ещё дымит: залито ' + pc + '%, нужно ' + need + '.';
+    else t = gs.win ? 'Обещалкин залит по шляпу: ' + have + ' при норме ' + need + '. Прогноз Струемера: выборы он проиграл.' : 'Обещалкин устоял: залито ' + pc + '%, нужно ' + need + '. Прогноз Струемера: второй тур.';
+  }
+  $('game-text').textContent = t;
+  $('scene').setAttribute('aria-label', 'Сцена с мишенью. ' + t);
+}
+
+/* ---------- chart ---------- */
+let lastW = 0;
+function drawChart() {
+  const c = state.cur, box = $('chart');
+  const W = Math.max(260, Math.floor(box.clientWidth || 0)), H = W < 480 ? 220 : 260;
+  lastW = W;
+  const mg = { l: 40, r: 12, t: 16, b: 28 }, pw = W - mg.l - mg.r, ph = H - mg.t - mg.b;
+  const a = c.env.amp, n = a.length, T = c.env.duration, m = c.m;
+  const inMl = !!(m.ok && m.volume);
+  const k = !m.ok ? 0 : inMl ? m.volume / m.area : 1 / m.peak;
+  const top = !m.ok ? 1 : inMl ? m.qmax : 1;
+  let ystep = 0.5, ymax = 1.15;
+  if (inMl) { ystep = [1, 2, 5, 10, 20, 50].find(s => top * 1.15 / s <= 5) || 100; ymax = Math.ceil(top * 1.15 / ystep) * ystep; }
+  const xstep = T <= 20 ? 2 : T <= 45 ? 5 : T <= 100 ? 10 : T <= 200 ? 20 : 60;
+  const X = t => mg.l + (t / T) * pw, Y = v => mg.t + ph - (v / ymax) * ph;
+  const f = v => v.toFixed(1);
+  let g = '';
+  for (let v = 0; v <= ymax + 1e-9; v += ystep) {
+    g += '<line class="grid" x1="' + mg.l + '" x2="' + (W - mg.r) + '" y1="' + f(Y(v)) + '" y2="' + f(Y(v)) + '"/>';
+    g += '<text class="tick" text-anchor="end" x="' + (mg.l - 6) + '" y="' + f(Y(v) + 3.5) + '">' + (inMl ? v : num(v, v % 1 ? 1 : 0)) + '</text>';
+  }
+  for (let t = 0; t <= T + 1e-9; t += xstep) {
+    g += '<line class="grid" x1="' + f(X(t)) + '" x2="' + f(X(t)) + '" y1="' + mg.t + '" y2="' + (mg.t + ph) + '"/>';
+    g += '<text class="tick" text-anchor="middle" x="' + f(X(t)) + '" y="' + (H - 9) + '">' + t + '</text>';
+  }
+  g += '<text class="tick" x="' + mg.l + '" y="10">' + (inMl ? 'мл/с' : 'отн. ед.') + '</text>';
+  g += '<text class="tick" text-anchor="end" x="' + (W - mg.r) + '" y="10">секунды</text>';
+  const stride = Math.max(1, Math.floor(n / (pw * 2)));
+  let ghost = '', line = '', last = c.s;
+  for (let i = 0; i < n; i += stride) ghost += (i ? 'L' : 'M') + f(X((i + .5) * DT)) + ' ' + f(Y(a[i] * k));
+  for (let i = c.s; i < c.e; i += stride) { line += (i > c.s ? 'L' : 'M') + f(X((i + .5) * DT)) + ' ' + f(Y(a[i] * k)); last = i; }
+  const area = line ? line + 'L' + f(X((last + .5) * DT)) + ' ' + f(Y(0)) + 'L' + f(X((c.s + .5) * DT)) + ' ' + f(Y(0)) + 'Z' : '';
+  let pk = '';
+  if (m.ok) {
+    const px = X((m.ip + .5) * DT), py = Y(top);
+    const anchor = px > W - 96 ? 'end' : px < mg.l + 60 ? 'start' : 'middle';
+    pk = '<circle class="peak" cx="' + f(px) + '" cy="' + f(py) + '" r="5.5"/>' +
+      '<text class="plabel" text-anchor="' + anchor + '" x="' + f(px) + '" y="' + f(py - 12) + '">' + (inMl ? 'Qmax ' + (m.est ? '≈ ' : '') + num(m.qmax) + ' мл/с' : 'пик') + '</text>';
+  }
+  const label = 'Кривая потока. Время мочеиспускания ' + num(m.voidTime) + ' с, перерывов: ' + m.breaks + (inMl ? ', Qmax ' + num(m.qmax) + ' мл/с' : '') + '.';
+  box.innerHTML =
+    '<svg width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(label) + '">' +
+    '<defs><clipPath id="plot"><rect x="' + mg.l + '" y="' + mg.t + '" width="' + pw + '" height="' + ph + '"/></clipPath></defs>' + g +
+    '<g clip-path="url(#plot)"><path class="ghost" fill="none" d="' + ghost + '"/>' +
+    (area ? '<path class="area" stroke="none" d="' + area + '"/><path class="flowline" fill="none" d="' + line + '"/>' : '') + '</g>' +
+    '<line class="bound" x1="' + f(X(c.s * DT)) + '" x2="' + f(X(c.s * DT)) + '" y1="' + mg.t + '" y2="' + (mg.t + ph) + '"/>' +
+    '<line class="bound" x1="' + f(X(c.e * DT)) + '" x2="' + f(X(c.e * DT)) + '" y1="' + mg.t + '" y2="' + (mg.t + ph) + '"/>' + pk +
+    '<line class="cross" id="hv-line" y1="' + mg.t + '" y2="' + (mg.t + ph) + '" visibility="hidden"/>' +
+    '<circle class="hv" id="hv-dot" r="4.5" visibility="hidden"/>' +
+    '<rect id="hv-hit" x="' + mg.l + '" y="' + mg.t + '" width="' + pw + '" height="' + ph + '" fill="transparent" pointer-events="all"/>' +
+    '</svg><div class="tip" id="tip" hidden></div>';
+  const hit = $('hv-hit'), cross = $('hv-line'), dot = $('hv-dot'), tip = $('tip');
+  const move = ev => {
+    const r = box.getBoundingClientRect(), x = Math.min(mg.l + pw, Math.max(mg.l, ev.clientX - r.left));
+    const t = (x - mg.l) / pw * T, i = Math.min(n - 1, Math.floor(t / DT)), v = a[i] * k;
+    cross.setAttribute('x1', f(x)); cross.setAttribute('x2', f(x)); cross.setAttribute('visibility', 'visible');
+    dot.setAttribute('cx', f(x)); dot.setAttribute('cy', f(Math.max(mg.t, Y(v)))); dot.setAttribute('visibility', 'visible');
+    tip.textContent = num(t) + ' с · ' + (inMl ? num(v) + ' мл/с' : num(v, 2));
+    tip.hidden = false;
+    tip.style.left = Math.min(W - tip.offsetWidth, Math.max(0, x + 10)) + 'px';
+  };
+  const leave = () => { cross.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); tip.hidden = true; };
+  hit.addEventListener('pointermove', move); hit.addEventListener('pointerdown', move);
+  hit.addEventListener('pointerleave', leave); hit.addEventListener('pointercancel', leave);
+}
+
+/* ---------- journal ---------- */
+function median(xs) { if (!xs.length) return null; const s = [...xs].sort((a, b) => a - b), h = s.length >> 1; return s.length % 2 ? s[h] : (s[h - 1] + s[h]) / 2; }
+function spark(curve) {
+  const pts = Array.isArray(curve) ? curve.map(Number).filter(v => isFinite(v)) : [];
+  if (pts.length < 2) return '<svg class="spark" width="96" height="28" aria-hidden="true"></svg>';
+  let d = '';
+  pts.forEach((v, i) => { d += (i ? 'L' : 'M') + (1 + i * 94 / (pts.length - 1)).toFixed(1) + ' ' + (26 - Math.min(1, Math.max(0, v)) * 23).toFixed(1); });
+  return '<svg class="spark" width="96" height="28" viewBox="0 0 96 28" aria-hidden="true"><path class="fill" stroke="none" d="' + d + 'L95 27L1 27Z"/><path class="line" fill="none" d="' + d + '"/></svg>';
+}
+function renderStoreNote() {
+  $('store-note').textContent =
+    state.mode === 'db' ? 'Журнал хранится в твоём аккаунте, виден только тебе и открывается с любого устройства. Сама запись никуда не отправляется: её разбирает браузер, в журнал идут только цифры и форма кривой.' :
+    state.mode === 'local' ? 'Журнал хранится только в этом браузере. Сама запись никуда не отправляется: её разбирает браузер.' :
+    state.mode === 'off' ? 'Журнал сейчас недоступен. Новые замеры не сохранятся, пока не обновишь страницу.' : 'Открываю журнал…';
+}
+/* Personal K: median ml-per-amplitude-second over the latest cup measurements made at the usual spot. */
+function calibrate() {
+  const ks = state.entries
+    .filter(e => e && !e.est && e.spot !== false && Number(e.volume) >= 100 && Number(e.k) > 0 && isFinite(Number(e.k)) && isFinite(Number(e.ts)))
+    .sort((a, b) => b.ts - a.ts).slice(0, 20).map(e => Number(e.k));
+  const n = ks.length, K = median(ks);
+  state.cal = { n, K, spread: n >= 2 ? median(ks.map(k => Math.abs(k - K) / K)) : null, ready: n >= CAL_MIN };
+}
+function renderCal() {
+  const cal = state.cal, n = cal.n, bar = $('cal-bar');
+  let cells = '';
+  for (let i = 0; i < CAL_FULL; i++) cells += '<span' + (i < n ? ' class="on"' : '') + '></span>';
+  bar.innerHTML = cells;
+  bar.setAttribute('aria-label', 'Замеров со стаканом: ' + n + ' из ' + CAL_FULL);
+  $('cal-count').textContent = n >= CAL_FULL ? n + ' ' + plural(n, 'замер', 'замера', 'замеров') : n + ' из ' + CAL_FULL;
+  const sp = cal.spread == null ? '' : ', разброс ±' + pct(cal.spread) + '%';
+  $('cal-text').textContent =
+    n === 0 ? 'Струемер подстраивается под твой унитаз и твой телефон. Десять замеров со стаканом, и дальше он считает мл/с сам, без стакана. Черновая оценка появится уже после третьего.' :
+    n < CAL_MIN ? 'Замеров со стаканом: ' + n + '. ' + (CAL_MIN - n === 1 ? 'Ещё один' : 'Ещё два') + ', и появится черновая оценка мл/с без стакана.' :
+    n < CAL_FULL ? 'Черновая калибровка работает' + sp + '. Мл/с без стакана уже считаются, каждый следующий стакан делает их точнее.' :
+    'Калибровка набрана' + sp + '. Стакан больше не обязателен. Новые замеры со стаканом продолжают её уточнять.';
+  $('cal-warn').hidden = !(n >= CAL_MIN && cal.spread != null && cal.spread > 0.3);
+}
+function renderJournal() {
+  calibrate(); renderCal();
+  if (state.cur && !state.cur.example) refresh();
+  const list = $('journal'), sum = $('summary');
+  const es = state.entries.filter(e => e && isFinite(Number(e.ts))).sort((a, b) => b.ts - a.ts);
+  if (!es.length) {
+    sum.hidden = true;
+    list.innerHTML = '<li class="empty">Пока пусто. Каждый сохранённый замер встанет сюда строкой: дата, кривая, время и штамп. Через неделю будет видно, чем утро отличается от вечера.</li>';
+    return;
+  }
+  const fmtD = new Intl.DateTimeFormat('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+  list.innerHTML = es.map(e => {
+    const V = VERDICT[e.code] || VERDICT.unheard, q = e.qmax == null ? null : Number(e.qmax);
+    return '<li class="row"><div class="when"><span class="date">' + esc(fmtD.format(new Date(Number(e.ts)))) + '</span><span class="slot">' + (SLOT[e.slot] || '') + '</span></div>' +
+      spark(e.curve) +
+      '<div class="nums"><span>' + num(Number(e.voidTime) || 0) + ' с</span><span>' + (q != null && isFinite(q) ? (e.est ? '≈ ' : '') + num(q) + ' мл/с' : 'без объёма') + '</span></div>' +
+      '<div class="status tone-' + V.tone + '"><span aria-hidden="true">' + V.mark + '</span> ' + V.stamp + '</div>' +
+      '<button type="button" class="del" data-id="' + esc(e.id) + '">Удалить</button></li>';
+  }).join('');
+  const rows = Object.keys(SLOT).map(s => {
+    const g = es.filter(e => e.slot === s);
+    const t = median(g.map(e => Number(e.voidTime)).filter(isFinite));
+    const q = median(g.filter(e => e.qmax != null).map(e => Number(e.qmax)).filter(isFinite));
+    return '<tr><td>' + SLOT[s] + '</td><td>' + g.length + '</td><td>' + (t == null ? '—' : num(t) + ' с') + '</td><td>' + (q == null ? '—' : num(q) + ' мл/с') + '</td></tr>';
+  }).join('');
+  sum.hidden = false;
+  sum.innerHTML = '<table><thead><tr><th scope="col">Медианы</th><th scope="col">Замеров</th><th scope="col">Время</th><th scope="col">Qmax</th></tr></thead><tbody>' + rows + '</tbody></table>';
+}
+function readLocal() { try { const v = JSON.parse(localStorage.getItem(LS_KEY) || '[]'); return Array.isArray(v) ? v : []; } catch (_) { return []; } }
+function writeLocal() { try { localStorage.setItem(LS_KEY, JSON.stringify(state.entries)); return true; } catch (_) { return false; } }
+function useLocal() { state.mode = 'local'; state.col = null; state.entries = readLocal(); state.loaded = true; renderStoreNote(); renderJournal(); }
+async function initStore() {
+  let db = null, user = null, uid = null;
+  if (window.claude && typeof window.claude.use === 'function') {
+    try { [db, user] = await Promise.all([window.claude.use('db'), window.claude.use('user')]); } catch (_) {}
+  }
+  if (db && user) { try { uid = await user.id(); } catch (_) {} }
+  if (!db || !uid) return useLocal();
+  try {
+    state.col = db.doc('data/users/' + uid + '/journal').collection('voids');
+    state.mode = 'db'; renderStoreNote();
+    state.col.orderBy('ts', 'desc').limit(300).onSnapshot(snap => {
+      state.entries = snap.docs.map(d => Object.assign({}, d.data(), { id: d.id }));
+      state.loaded = true; renderJournal();
+    }, () => {
+      if (!state.loaded) useLocal(); else { state.mode = 'off'; renderStoreNote(); }
+    });
+  } catch (_) { useLocal(); }
+}
+async function saveCurrent() {
+  const c = state.cur; if (!c || c.example || c.saved) return;
+  const m = c.m;
+  const entry = {
+    ts: c.ts, slot: getSlot(), code: c.v.code,
+    voidTime: r2(m.voidTime), flowTime: r2(m.flowTime), tPeak: r2(m.tPeak), breaks: m.breaks, fullness: r2(m.fullness),
+    volume: m.volume == null ? null : Math.round(m.volume), qmax: m.qmax == null ? null : r2(m.qmax), qave: m.qave == null ? null : r2(m.qave),
+    k: m.k ? Number(m.k.toPrecision(5)) : null, est: !!m.est, spot: $('spot').checked,
+    curve: compactCurve(c.env, c.s, c.e, m.peak, 64)
+  };
+  const btn = $('save'); btn.disabled = true;
+  c.saved = true;
+  try {
+    if (state.mode === 'db') await state.col.doc().set(entry);
+    else if (state.mode === 'local') {
+      entry.id = 'l' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+      state.entries.push(entry);
+      if (!writeLocal()) { state.entries.pop(); throw { code: 'local' }; }
+      renderJournal();
+    } else throw { code: 'off' };
+    say('');
+  } catch (err) {
+    c.saved = false;
+    const code = err && err.code;
+    say(code === 'invalid_argument' ? 'Не сохранилось. На этой странице у тебя нет права записи в журнал.' :
+        code === 'quota_exceeded' ? 'Не сохранилось: журнал переполнен. Удали старые замеры.' :
+        code === 'local' ? 'Не сохранилось: браузер не даёт записать данные. Проверь, не приватное ли это окно.' :
+        'Не сохранилось: журнал сейчас недоступен. Попробуй ещё раз через минуту.');
+  }
+  renderReadout();
+}
+async function removeEntry(id) {
+  try {
+    if (state.mode === 'db') await state.col.doc(id).delete();
+    else if (state.mode === 'local') { state.entries = state.entries.filter(e => e.id !== id); writeLocal(); renderJournal(); }
+  } catch (_) { say('Не удалилось: журнал сейчас недоступен.'); }
+}
+
+/* ---------- wiring ---------- */
+async function onFile(file) {
+  if (!file) return;
+  say('Слушаю запись…');
+  try {
+    const env = await decodeFile(file);
+    const lm = Number(file.lastModified), now = Date.now();
+    const ts = lm > 0 && lm <= now ? lm : now;
+    if (!state.slotTouched) setSlot(slotFor(new Date(ts)));
+    show(env, { name: file.name, ts });
+    say('');
+    $('result').scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' });
+    playScene();
+    return true;
+  } catch (err) {
+    const k = err && err.message;
+    say(k === 'format' ? 'Не смог прочитать этот файл. Подойдут m4a, mp3, wav, ogg. Если диктофон пишет в amr или 3gp, поменяй формат в его настройках.' :
+        k === 'tooshort' ? 'Запись короче трёх секунд. Тут нечего мерить.' :
+        k === 'toolong' ? 'Запись длиннее пяти минут. Обрежь её до самого процесса.' :
+        k === 'nosupport' ? 'Этот браузер не умеет разбирать звук. Открой страницу в Chrome или Safari.' :
+        'Не получилось разобрать запись. Попробуй другой файл.');
+  }
+}
+/* ---------- live microphone (only where the page is hosted outside Claude's viewer, which keeps the mic closed) ---------- */
+const canMic = !window.claude && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) && typeof MediaRecorder !== 'undefined' && window.isSecureContext !== false;
+const rec = { on: false, stream: null, mr: null, chunks: [], ctx: null, an: null, buf: null, raf: 0, timer: 0, t0: 0, lock: null, agc: false };
+async function startRec() {
+  if (rec.on || rec.mr) return;
+  say('');
+  const AC = window.AudioContext || window.webkitAudioContext;
+  let ctx = null; try { ctx = new AC(); } catch (_) {}
+  const quit = () => { if (ctx) { const p = ctx.close(); if (p && p.catch) p.catch(() => {}); } };
+  let stream;
+  try {
+    /* raw microphone: auto gain and noise suppression would flatten exactly the signal we measure */
+    stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false, channelCount: 1 } });
+  } catch (err) {
+    quit();
+    const n = err && err.name;
+    say(n === 'NotAllowedError' || n === 'SecurityError' ? 'Микрофон не разрешён. Разреши этому сайту доступ к микрофону в настройках браузера и нажми ещё раз.' :
+        n === 'NotFoundError' ? 'Микрофон не найден.' : 'Не получилось включить микрофон. Запиши на диктофон и выбери файл.');
+    return;
+  }
+  let mr;
+  try { mr = new MediaRecorder(stream); }
+  catch (_) { stream.getTracks().forEach(t => t.stop()); quit(); say('Этот браузер не умеет записывать звук. Запиши на диктофон и выбери файл.'); return; }
+  const track = stream.getAudioTracks()[0], set = track && track.getSettings ? track.getSettings() : {};
+  Object.assign(rec, { on: true, stream, mr, chunks: [], ctx, an: null, t0: performance.now(), agc: set.autoGainControl === true });
+  mr.ondataavailable = ev => { if (ev.data && ev.data.size) rec.chunks.push(ev.data); };
+  mr.onstop = finishRec;
+  mr.start();
+  if (ctx) {
+    try {
+      if (ctx.resume) ctx.resume();
+      const an = ctx.createAnalyser(); an.fftSize = 2048;
+      ctx.createMediaStreamSource(stream).connect(an);
+      rec.an = an; rec.buf = new Uint8Array(an.fftSize);
+    } catch (_) { rec.an = null; }
+  }
+  $('recbox').hidden = false; $('rec').hidden = true; $('pick').disabled = true;
+  rec.timer = setTimeout(stopRec, 180000);
+  try { if (navigator.wakeLock) rec.lock = await navigator.wakeLock.request('screen'); } catch (_) {}
+  tickRec();
+}
+function tickRec() {
+  if (!rec.on) return;
+  const el = (performance.now() - rec.t0) / 1000;
+  $('rec-time').textContent = Math.floor(el / 60) + ':' + String(Math.floor(el % 60)).padStart(2, '0');
+  if (rec.an) {
+    rec.an.getByteTimeDomainData(rec.buf);
+    let s = 0; for (let i = 0; i < rec.buf.length; i++) { const v = (rec.buf[i] - 128) / 128; s += v * v; }
+    $('rec-level').style.width = Math.min(100, Math.round(Math.sqrt(s / rec.buf.length) * 400)) + '%';
+  }
+  rec.raf = requestAnimationFrame(tickRec);
+}
+function stopRec() {
+  if (!rec.on) return;
+  rec.on = false; cancelAnimationFrame(rec.raf); clearTimeout(rec.timer);
+  try { rec.mr.stop(); } catch (_) { finishRec(); }
+}
+async function finishRec() {
+  if (!rec.mr) return;
+  const type = rec.mr.mimeType || (rec.chunks[0] && rec.chunks[0].type) || 'audio/webm';
+  const blob = new Blob(rec.chunks, { type }), agc = rec.agc;
+  if (rec.stream) rec.stream.getTracks().forEach(t => t.stop());
+  if (rec.ctx) { const p = rec.ctx.close(); if (p && p.catch) p.catch(() => {}); }
+  if (rec.lock) { try { rec.lock.release(); } catch (_) {} }
+  Object.assign(rec, { stream: null, mr: null, ctx: null, an: null, lock: null, chunks: [] });
+  $('recbox').hidden = true; $('rec').hidden = false; $('pick').disabled = false; $('rec-level').style.width = '0';
+  const ok = await onFile({ name: 'Запись с микрофона', lastModified: Date.now(), arrayBuffer: () => blob.arrayBuffer() });
+  if (ok && agc) say('Телефон не дал выключить автоусиление микрофона. Форма и время верны, а личная калибровка будет шумнее.');
+}
+function onTrim(which) {
+  const c = state.cur; if (!c) return;
+  const ws = $('w-start'), we = $('w-end'), T = c.env.duration;
+  let s = parseFloat(ws.value), e = parseFloat(we.value);
+  if (e - s < 2) { if (which === 's') s = Math.max(0, e - 2); else e = Math.min(T, s + 2); }
+  ws.value = s.toFixed(1); we.value = e.toFixed(1);
+  c.s = Math.round(s / DT); c.e = Math.min(c.env.amp.length, Math.round(e / DT));
+  c.saved = false; refresh();
+}
+if (canMic) {
+  $('rec').hidden = false; $('pick').classList.add('alt');
+  $('steps-mic').hidden = false; $('steps-file').hidden = true;
+  $('rec').addEventListener('click', startRec);
+  $('rec-stop').addEventListener('click', stopRec);
+}
+$('pick').addEventListener('click', () => $('file').click());
+$('file').addEventListener('change', ev => { const f = ev.target.files && ev.target.files[0]; onFile(f); ev.target.value = ''; });
+document.querySelectorAll('input[name="slot"]').forEach(el => el.addEventListener('change', () => { state.slotTouched = true; }));
+document.querySelectorAll('input[name="target"]').forEach(el => el.addEventListener('change', () => {
+  scene.target = TARGETS[el.value] ? el.value : 'clock';
+  try { localStorage.setItem(LS_TARGET, scene.target); } catch (_) {}
+  if (state.cur) { renderGame(); playScene(); }
+}));
+$('replay').addEventListener('click', playScene);
+$('volume').addEventListener('input', () => { if (state.cur && !state.cur.example) { state.cur.saved = false; refresh(); } });
+$('spot').addEventListener('change', () => { if (state.cur && !state.cur.example) { state.cur.saved = false; refresh(); } });
+$('w-start').addEventListener('input', () => onTrim('s'));
+$('w-end').addEventListener('input', () => onTrim('e'));
+$('save').addEventListener('click', saveCurrent);
+$('journal').addEventListener('click', ev => {
+  const b = ev.target.closest && ev.target.closest('.del'); if (!b) return;
+  if (b.hasAttribute('data-armed')) { removeEntry(b.getAttribute('data-id')); return; }
+  b.setAttribute('data-armed', ''); b.textContent = 'Точно удалить?';
+  setTimeout(() => { if (b.isConnected) { b.removeAttribute('data-armed'); b.textContent = 'Удалить'; } }, 4000);
+});
+const zone = $('measure');
+zone.addEventListener('dragover', ev => { ev.preventDefault(); zone.classList.add('drop-on'); });
+zone.addEventListener('dragleave', () => zone.classList.remove('drop-on'));
+zone.addEventListener('drop', ev => { ev.preventDefault(); zone.classList.remove('drop-on'); const f = ev.dataTransfer && ev.dataTransfer.files && ev.dataTransfer.files[0]; onFile(f); });
+if ('ResizeObserver' in window) {
+  new ResizeObserver(() => { const w = Math.max(260, Math.floor($('chart').clientWidth || 0)); if (state.cur && w !== lastW) drawChart(); }).observe($('chart'));
+  new ResizeObserver(() => { if (state.cur && !scene.raf) drawScene(1); }).observe($('scene'));
+}
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (state.cur && !scene.raf) drawScene(1); });
+
+try { const t = localStorage.getItem(LS_TARGET); if (t && TARGETS[t]) { scene.target = t; $('target-' + t).checked = true; } } catch (_) {}
+setSlot(slotFor(new Date()));
+renderCal();
+show(exampleEnv(), { example: true, volume: 320 });
+initStore();
+})();
+</script>
+</body>
+</html>
