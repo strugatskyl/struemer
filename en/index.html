@@ -1,15 +1,19 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<title>Струемер Стругацкого</title>
-<meta name="description" content="Телефон слушает струю и рисует кривую потока, время, перерывы и штамп. Игрушка, не медицинский прибор.">
+<title>Strugatsky’s Streamometer</title>
+<meta name="description" content="Your phone listens, draws your flow curve, and helps you drown a cartoon alarm clock. A garage-built take on acoustic uroflowmetry. A toy, not a medical device.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Струемер Стругацкого">
-<meta property="og:description" content="Телефон слушает струю и рисует кривую потока, время, перерывы и штамп. Игрушка, не медицинский прибор.">
-<meta property="og:url" content="https://strugatskyl.github.io/struemer/">
+<meta property="og:title" content="Strugatsky’s Streamometer">
+<meta property="og:description" content="Your phone listens, draws your flow curve, and helps you drown a cartoon alarm clock. A garage-built take on acoustic uroflowmetry. A toy, not a medical device.">
+<meta property="og:url" content="https://strugatskyl.github.io/struemer/en/">
+<meta property="og:image" content="https://strugatskyl.github.io/struemer/en/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Dela+Gothic+One&family=Martian+Mono:wght@400;500&display=swap">
@@ -216,8 +220,8 @@ td:first-child{font:700 16px var(--font-body)}
 <body>
 <div class="wrap">
   <header class="top">
-    <div class="toprow"><span class="sticker tiny">Акустическая урофлоуметрия на коленке · собрано с Claude</span><a class="lang" href="https://strugatskyl.github.io/struemer/en/" hreflang="en">EN</a></div>
-    <h1>Струемер Стругацкого</h1>
+    <div class="toprow"><span class="sticker tiny">Garage-built acoustic uroflowmetry · made with Claude</span><a class="lang" href="https://strugatskyl.github.io/struemer/" hreflang="ru">RU</a></div>
+    <h1>Strugatsky’s Streamometer</h1>
     <div class="hello">
       <svg class="drop" viewBox="0 0 64 78" aria-hidden="true">
         <path class="body" d="M32 4 C32 4 8 34 8 50 a24 24 0 0 0 48 0 C56 34 32 4 32 4 Z"/>
@@ -225,65 +229,65 @@ td:first-child{font:700 16px var(--font-body)}
         <circle class="feat" cx="25" cy="52" r="3.4"/><circle class="feat" cx="41" cy="52" r="3.4"/>
         <path class="smile" d="M25 61 Q33 68 41 61"/>
       </svg>
-      <p class="bubble">Раньше к напору прислушивалась мама. Теперь я. Жми жёлтую кнопку. Диагнозов не ставлю.</p>
+      <p class="bubble">Your watch tracks your steps, your sleep and your stress. I track the one thing it won’t. Hit the yellow button. No diagnoses, just data and a laugh.</p>
     </div>
   </header>
 
   <section class="panel" id="measure" aria-labelledby="h-measure">
-    <h2 class="sticker" id="h-measure">Новый замер</h2>
+    <h2 class="sticker" id="h-measure">New reading</h2>
     <div class="cta">
-      <button type="button" class="btn big" id="rec" hidden><span class="dot" aria-hidden="true"></span>Записать</button>
-      <button type="button" class="btn big" id="pick">Выбрать запись</button>
+      <button type="button" class="btn big" id="rec" hidden><span class="dot" aria-hidden="true"></span>Record</button>
+      <button type="button" class="btn big" id="pick">Choose a recording</button>
       <input class="vh" id="file" type="file" tabindex="-1" aria-hidden="true" accept="audio/*,.m4a,.mp3,.wav,.aac,.ogg,.opus,.flac">
     </div>
     <div class="recbox" id="recbox" hidden>
       <span class="recdot" aria-hidden="true"></span>
-      <span class="rectime" id="rec-time" role="timer" aria-label="Идёт запись">0:00</span>
+      <span class="rectime" id="rec-time" role="timer" aria-label="Recording">0:00</span>
       <div class="meter" aria-hidden="true"><i id="rec-level"></i></div>
-      <button type="button" class="btn stop" id="rec-stop">Стоп</button>
+      <button type="button" class="btn stop" id="rec-stop">Stop</button>
     </div>
-    <p class="hint" id="hint-mic" hidden>Нажми, положи телефон на бачок, пару секунд помолчи и начинай. «Стоп» жми до смыва.</p>
-    <p class="hint" id="hint-file">Запиши процесс на диктофон телефона, останови запись до смыва и выбери файл здесь.</p>
-    <p class="note" id="mic-elsewhere">Запись в одно нажатие, прямо с микрофона, работает в версии на <a href="https://strugatskyl.github.io/struemer/" target="_blank" rel="noopener">strugatskyl.github.io/struemer</a>.</p>
+    <p class="hint" id="hint-mic" hidden>Tap, set the phone on the toilet tank, give it two quiet seconds, then go. Hit Stop before you flush.</p>
+    <p class="hint" id="hint-file">Record it with your phone’s voice recorder, stop before you flush, then choose the file here.</p>
+    <p class="note" id="mic-elsewhere">One-tap recording straight from the microphone works in the version at <a href="https://strugatskyl.github.io/struemer/en/" target="_blank" rel="noopener">strugatskyl.github.io/struemer/en</a>.</p>
     <details class="howto">
-      <summary>Как записать, чтобы вышло точнее</summary>
+      <summary>How to get a cleaner reading</summary>
       <ol class="steps" id="steps-file">
-        <li>Включи диктофон и положи телефон на бачок или полку рядом. Шумоподавление в диктофоне выключи, если оно есть.</li>
-        <li>Подожди две-три секунды тишины и начинай. Целься в воду: звук даёт вода, а не фаянс.</li>
-        <li>Закончил, ещё пара секунд тишины, стоп. Смывать после остановки записи.</li>
-        <li>Выбери файл записи здесь.</li>
+        <li>Start your voice recorder and set the phone on the toilet tank or a nearby shelf. Turn off noise reduction in the recorder if it has one.</li>
+        <li>Wait two or three quiet seconds, then go. Aim for the water: the sound comes from the water, not the porcelain.</li>
+        <li>When you’re done, give it two more quiet seconds, then stop. Flush after the recording is stopped.</li>
+        <li>Choose the recording file here.</li>
       </ol>
       <ol class="steps" id="steps-mic" hidden>
-        <li>Нажми «Записать», разреши доступ к микрофону и положи телефон на бачок или полку рядом.</li>
-        <li>Подожди две-три секунды тишины и начинай. Целься в воду: звук даёт вода, а не фаянс.</li>
-        <li>Закончил, ещё пара секунд тишины, «Стоп». Смывать после.</li>
+        <li>Tap Record, allow microphone access, and set the phone on the toilet tank or a nearby shelf.</li>
+        <li>Wait two or three quiet seconds, then go. Aim for the water: the sound comes from the water, not the porcelain.</li>
+        <li>When you’re done, two more quiet seconds, then Stop. Flush afterward.</li>
       </ol>
     </details>
     <p class="msg" id="msg" role="status" hidden></p>
   </section>
 
   <section class="panel" id="result" aria-labelledby="h-result">
-    <h2 class="sticker" id="h-result">Результат</h2>
+    <h2 class="sticker" id="h-result">Result</h2>
     <div class="subhead">
-      <span class="tag" id="tag">Пример</span>
+      <span class="tag" id="tag">Sample</span>
       <span class="fname" id="fname"></span>
     </div>
 
     <div class="game">
-      <canvas class="scene" id="scene" width="720" height="440" role="img" aria-label="Сцена: струя заливает мишень"></canvas>
+      <canvas class="scene" id="scene" width="720" height="440" role="img" aria-label="Scene: the stream floods a target"></canvas>
       <p class="caption" id="game-text" role="status"></p>
       <div class="game-controls">
         <fieldset class="seg">
-          <legend class="label">Мишень</legend>
+          <legend class="label">Target</legend>
           <div class="chip-row">
-            <label><input type="radio" name="target" id="target-clock" value="clock" checked><span>Будильник <small>150 мл · 10 с</small></span></label>
-            <label><input type="radio" name="target" id="target-fire" value="fire"><span>Костёр <small>300 мл · 20 с</small></span></label>
-            <label><input type="radio" name="target" id="target-cand" value="cand"><span>Обещалкин <small>450 мл · 30 с</small></span></label>
+            <label><input type="radio" name="target" id="target-clock" value="clock" checked><span>Alarm clock <small>5 oz · 10 s</small></span></label>
+            <label><input type="radio" name="target" id="target-fire" value="fire"><span>Campfire <small>10 oz · 20 s</small></span></label>
+            <label><input type="radio" name="target" id="target-cand" value="cand"><span>Mr. Promises <small>15 oz · 30 s</small></span></label>
           </div>
         </fieldset>
-        <button type="button" class="btn alt" id="replay">Повторить мультик</button>
+        <button type="button" class="btn alt" id="replay">Replay the cartoon</button>
       </div>
-      <p class="note">Мишень считается залитой по миллилитрам, если объём известен, иначе по секундам потока. Обещалкин — выдуманный кандидат, все совпадения случайны.</p>
+      <p class="note">A target counts as flooded by ounces when the volume is known, otherwise by seconds of flow. Mr. Promises is fictional. Any resemblance to your boss, your contractor or your elected officials is coincidental.</p>
     </div>
 
     <div class="readout">
@@ -292,70 +296,70 @@ td:first-child{font:700 16px var(--font-body)}
     </div>
 
     <div class="presave" id="presave" hidden>
-      <h3>Перед сохранением</h3>
+      <h3>Before you save</h3>
       <div class="controls">
-        <label class="field"><span class="label">Объём, мл</span>
-          <input id="volume" type="number" inputmode="numeric" min="20" max="1500" step="10" placeholder="если мерил">
+        <label class="field"><span class="label">Volume, fl oz</span>
+          <input id="volume" type="number" inputmode="decimal" min="1" max="50" step="0.5" placeholder="if measured">
         </label>
         <fieldset class="seg">
-          <legend class="label">Время суток</legend>
+          <legend class="label">Time of day</legend>
           <div class="seg-row">
-            <label><input type="radio" name="slot" id="slot-morning" value="morning"><span>Утро</span></label>
-            <label><input type="radio" name="slot" id="slot-day" value="day"><span>День</span></label>
-            <label><input type="radio" name="slot" id="slot-evening" value="evening"><span>Вечер</span></label>
+            <label><input type="radio" name="slot" id="slot-morning" value="morning"><span>Morning</span></label>
+            <label><input type="radio" name="slot" id="slot-day" value="day"><span>Midday</span></label>
+            <label><input type="radio" name="slot" id="slot-evening" value="evening"><span>Evening</span></label>
           </div>
         </fieldset>
-        <label class="check"><input type="checkbox" id="spot" checked> Мой туалет, телефон на обычном месте</label>
+        <label class="check"><input type="checkbox" id="spot" checked> My usual bathroom, phone in its usual spot</label>
       </div>
-      <p class="note">Объём необязателен. Если писал в мерный стакан, впиши миллилитры: посчитаю мл/с и засчитаю замер в личную калибровку. Галочку сними, если писал не там, где обычно.</p>
+      <p class="note">Volume is optional. If you used a measuring cup, enter the ounces: I’ll work out mL/s and count this reading toward your personal calibration. Uncheck the box if this wasn’t your usual bathroom.</p>
       <div class="actions">
-        <button type="button" class="btn" id="save" hidden>Сохранить в журнал</button>
-        <button type="button" class="linkbtn" id="again">Новый замер</button>
+        <button type="button" class="btn" id="save" hidden>Save to logbook</button>
+        <button type="button" class="linkbtn" id="again">New reading</button>
       </div>
     </div>
-    <p class="note" id="save-note">Это пример: так выглядит результат. Свои замеры можно будет сохранять в журнал.</p>
+    <p class="note" id="save-note">This is a sample result. Your own readings can be saved to the logbook.</p>
 
     <div class="paper">
       <div class="chart" id="chart"></div>
       <div class="trim">
-        <div><label class="label" for="w-start">Начало <output id="o-start" for="w-start"></output></label>
+        <div><label class="label" for="w-start">Start <output id="o-start" for="w-start"></output></label>
           <input type="range" id="w-start" min="0" max="30" step="0.1" value="0"></div>
-        <div><label class="label" for="w-end">Конец <output id="o-end" for="w-end"></output></label>
+        <div><label class="label" for="w-end">End <output id="o-end" for="w-end"></output></label>
           <input type="range" id="w-end" min="0" max="30" step="0.1" value="30"></div>
-        <p class="note">Границы ставлю сам. Если в запись попал смыв или хлопок крышки, подвинь.</p>
+        <p class="note">I set the boundaries automatically. If a flush or a slammed lid made it into the recording, drag them.</p>
       </div>
     </div>
     <dl class="metrics" id="metrics"></dl>
   </section>
 
   <section class="panel flat" id="cal" aria-labelledby="h-cal">
-    <h2 class="sticker" id="h-cal">Личная калибровка</h2>
+    <h2 class="sticker" id="h-cal">Personal calibration</h2>
     <div class="subhead"><span class="label" id="cal-count"></span></div>
     <div class="calbar" id="cal-bar" role="img"></div>
     <p id="cal-text"></p>
-    <p class="msg" id="cal-warn" hidden>Разброс большой. Скорее всего, телефон лежит по-разному или диктофон сам подкручивает громкость. Клади телефон в одно и то же место и выключи автоусиление, если оно есть.</p>
-    <p class="note">Калибровка действует там, где набрана: тот же туалет, телефон на том же месте. В зачёт идут замеры со стаканом от 100 мл, последние двадцать.</p>
+    <p class="msg" id="cal-warn" hidden>The spread is large. Most likely the phone sits in a different spot each time, or the recorder is adjusting volume on its own. Keep the phone in the same place and turn off auto gain if you can.</p>
+    <p class="note">Calibration only holds where it was built: same bathroom, phone in the same spot. It uses your last twenty measuring-cup readings of 3.5 oz (100 mL) or more.</p>
   </section>
 
   <section class="panel flat" id="log" aria-labelledby="h-log">
-    <h2 class="sticker" id="h-log">Журнал</h2>
-    <p class="note" id="store-note">Открываю журнал…</p>
+    <h2 class="sticker" id="h-log">Logbook</h2>
+    <p class="note" id="store-note">Opening the logbook…</p>
     <div class="tablebox" id="summary" hidden></div>
-    <ul class="journal" id="journal"><li class="empty">Открываю журнал…</li></ul>
+    <ul class="journal" id="journal"><li class="empty">Opening the logbook…</li></ul>
   </section>
 
   <section class="panel flat trust" aria-labelledby="h-trust">
-    <h2 class="sticker" id="h-trust">Чему тут верить</h2>
+    <h2 class="sticker" id="h-trust">What to trust</h2>
     <ul>
-      <li>Времени, форме кривой и перерывам верить можно. Это микрофон слышит хорошо.</li>
-      <li>Миллилитрам в секунду верить осторожно. Они получаются из объёма (стакан или личная калибровка) и допущения, что громкость пропорциональна потоку. Калибровка честно показывает свой разброс.</li>
-      <li>Сравнивать замеры между собой стоит только в одном и том же туалете, с телефоном на одном и том же месте.</li>
-      <li>Про простату звук не говорит ничего. Слабая струя бывает по многим причинам, а ранний рак простаты струю обычно не меняет.</li>
-      <li>Мишени тем более ничего не значат. Это игра.</li>
+      <li>Timing, curve shape and pauses are solid. A microphone hears those well.</li>
+      <li>Take the mL/s numbers with a grain of salt. They come from volume (a measuring cup or your personal calibration) plus the assumption that loudness tracks flow. The calibration shows its own spread so you can judge it.</li>
+      <li>Only compare readings taken in the same bathroom with the phone in the same spot.</li>
+      <li>Sound says nothing about your prostate. A weak stream has many possible causes, and early prostate cancer usually doesn’t change the stream at all.</li>
+      <li>The targets mean even less. They’re a game.</li>
     </ul>
-    <h3>Когда идти к урологу, а не к Струемеру</h3>
-    <p>Слабая или прерывистая струя держится неделями. Встаёшь ночью два раза и чаще. Кровь в моче, боль или жжение. Не получается помочиться совсем: это срочно, в тот же день.</p>
-    <p class="note">Для масштаба: млекопитающие тяжелее 3 кг опорожняют пузырь в среднем за 21 секунду, плюс-минус 13 (Yang et al., PNAS, 2014). Струемер это игрушка, а не медицинский прибор.</p>
+    <h3>When to see a urologist instead of a Streamometer</h3>
+    <p>A weak or stop-and-go stream that lasts for weeks. Getting up twice or more a night. Blood in your urine, pain or burning. Can’t go at all: that is urgent, get care the same day.</p>
+    <p class="note">For scale: mammals over about 7 pounds empty their bladders in 21 seconds on average, give or take 13 (Yang et al., PNAS, 2014; yes, it won an Ig Nobel). Streamometer is a toy. It is not a medical device and not medical advice.</p>
   </section>
 </div>
 
@@ -365,25 +369,25 @@ td:first-child{font:700 16px var(--font-body)}
 const $ = id => document.getElementById(id);
 const DT = 0.05;
 const LS_KEY = 'struemer.journal.v1', LS_TARGET = 'struemer.target';
-const LOC = { lang: 'ru', num: 'ru-RU', oz: false };
+const LOC = { lang: 'en', num: 'en-US', oz: true };
 const OZ = 29.5735;
-const SLOT = { morning: 'Утро', day: 'День', evening: 'Вечер' };
+const SLOT = { morning: 'Morning', day: 'Midday', evening: 'Evening' };
 const VERDICT = {
-  unheard:  { stamp: 'Не расслышал',   tone: 'unk',   mark: '○' },
-  lowvol:   { stamp: 'Мало налито',    tone: 'unk',   mark: '○' },
-  breaks:   { stamp: 'С перерывами',   tone: 'watch', mark: '▲' },
-  strong:   { stamp: 'Напор годный',   tone: 'ok',    mark: '●' },
-  mid:      { stamp: 'Напор так себе', tone: 'watch', mark: '▲' },
-  weak:     { stamp: 'Напор слабый',   tone: 'bad',   mark: '■' },
-  long:     { stamp: 'Долго',          tone: 'watch', mark: '▲' },
-  hitch:    { stamp: 'С заминкой',     tone: 'watch', mark: '▲' },
-  plateau:  { stamp: 'Плато',          tone: 'watch', mark: '▲' },
-  shape_ok: { stamp: 'Форма в норме',  tone: 'ok',    mark: '●' }
+  unheard:  { stamp: 'Couldn’t hear you',   tone: 'unk',   mark: '○' },
+  lowvol:   { stamp: 'Not much in the tank',    tone: 'unk',   mark: '○' },
+  breaks:   { stamp: 'Stop-and-go',   tone: 'watch', mark: '▲' },
+  strong:   { stamp: 'Good to go',   tone: 'ok',    mark: '●' },
+  mid:      { stamp: 'Middle of the road', tone: 'watch', mark: '▲' },
+  weak:     { stamp: 'Low pressure',   tone: 'bad',   mark: '■' },
+  long:     { stamp: 'Taking your time',          tone: 'watch', mark: '▲' },
+  hitch:    { stamp: 'One hiccup',     tone: 'watch', mark: '▲' },
+  plateau:  { stamp: 'Plateau',          tone: 'watch', mark: '▲' },
+  shape_ok: { stamp: 'Textbook curve',  tone: 'ok',    mark: '●' }
 };
 const TARGETS = {
-  clock: { name: 'Будильник', ml: 150, oz: 5, sec: 10 },
-  fire:  { name: 'Костёр',    ml: 300, oz: 10, sec: 20 },
-  cand:  { name: 'Обещалкин', ml: 450, oz: 15, sec: 30 }
+  clock: { name: 'Alarm clock', ml: 150, oz: 5, sec: 10 },
+  fire:  { name: 'Campfire',    ml: 300, oz: 10, sec: 20 },
+  cand:  { name: 'Mr. Promises', ml: 450, oz: 15, sec: 30 }
 };
 const num = (v, d = 1) => Number(v).toLocaleString(LOC.num, { minimumFractionDigits: d, maximumFractionDigits: d });
 const r2 = v => Math.round(v * 100) / 100;
@@ -393,7 +397,7 @@ const pct = x => Math.round(x * 100);
 const round10 = v => Math.round(v / 10) * 10;
 function volShort(ml, approx) {
   if (LOC.oz) { const o = Math.round(ml / OZ * 10) / 10; return (approx || o % 1 === 0 ? num(o, 0) : num(o, 1)) + ' oz'; }
-  return num(approx ? round10(ml) : ml, 0) + ' мл';
+  return num(approx ? round10(ml) : ml, 0) + ' mL';
 }
 function volText(ml, approx) { return LOC.oz ? volShort(ml, approx) + ' (' + num(approx ? round10(ml) : ml, 0) + ' mL)' : volShort(ml, approx); }
 function plural(n, one, few, many) { if (LOC.lang !== 'ru') return n === 1 ? one : many; const d = n % 10, h = n % 100; return (d === 1 && h !== 11) ? one : (d >= 2 && d <= 4 && !(h >= 12 && h <= 14)) ? few : many; }
@@ -481,37 +485,37 @@ function measure(env, s, e, volume, K) {
   if (m.volume) { m.qmax = peak * m.volume / area; m.qave = m.volume / flowTime; }
   return m;
 }
-function times(n) { return plural(n, 'раз', 'раза', 'раз'); }
+function times(n) { return plural(n, 'time', 'times', 'times'); }
 function judge(m, env) {
   const notes = [];
-  if (env.noSilence) notes.push('В записи не слышно тишины до и после. Начало и конец могли обрезаться, проверь границы.');
+  if (env.noSilence) notes.push('I can’t hear any silence before or after. The start and end may be clipped, so check the boundaries.');
   let code, text;
   const v = m.volume, est = m.est, cal = state.cal, c = state.cur;
   if (!m.ok || m.voidTime < 4 || m.flowTime < 3) {
-    code = 'unheard'; text = 'Струю почти не слышно. Положи телефон ближе, целься в воду и запиши ещё раз.';
+    code = 'unheard'; text = 'I can barely hear the stream. Move the phone closer, aim for the water and try again.';
   } else if (v && v < 150) {
-    code = 'lowvol'; text = (est ? 'По личной калибровке вышло около ' + volText(v, true) + '.' : 'Объём ' + volText(v) + '.') + ' При объёме меньше 150 мл кривую не оценивают даже в клинике. Приходи с полным пузырём.';
+    code = 'lowvol'; text = (est ? 'Your personal calibration puts this at about ' + volText(v, true) + '.' : 'Volume: ' + volText(v) + '.') + ' Under about 5 oz (150 mL), even a clinic won’t read much into the curve. Come back with a full tank.';
   } else if (m.breaks >= 2) {
-    code = 'breaks'; text = 'Струя прерывалась ' + m.breaks + ' ' + times(m.breaks) + '. Разово бывает у всех: отвлёкся, тужился, сменил прицел. Если так в каждом замере, покажи журнал урологу.';
+    code = 'breaks'; text = 'The stream paused ' + m.breaks + ' ' + times(m.breaks) + '. It happens to everyone now and then: you got distracted, pushed, or changed your aim. If it shows up in every reading, show your logbook to a urologist.';
   } else if (v) {
-    const q = num(m.qmax), lead = est ? 'По личной калибровке Qmax около ' + q + ' мл/с.' : 'Оценка Qmax ' + q + ' мл/с.';
-    if (m.qmax >= 15) { code = 'strong'; text = lead + ' Ориентир для мужчин при объёме от 150 мл: выше 15 считается нормой.'; }
-    else if (m.qmax >= 10) { code = 'mid'; text = lead + ' Это серая зона от 10 до 15. Смотри на тренд по журналу, а не на один замер.'; }
-    else { code = 'weak'; text = lead + ' Это ниже 10. Один замер ничего не доказывает: микрофон и диктофон могли соврать. Повтори несколько раз на полном пузыре. Если повторяется, покажи журнал урологу, там измерят прибором.'; }
-    if (m.breaks === 1) notes.push('Была одна пауза посреди струи.');
+    const q = num(m.qmax), lead = est ? 'Per your personal calibration, Qmax is about ' + q + ' mL/s.' : 'Estimated Qmax: ' + q + ' mL/s.';
+    if (m.qmax >= 15) { code = 'strong'; text = lead + ' The usual rule of thumb for men voiding at least 5 oz (150 mL): above 15 is considered normal.'; }
+    else if (m.qmax >= 10) { code = 'mid'; text = lead + ' That’s the gray zone between 10 and 15. Watch the trend in your logbook, not a single reading.'; }
+    else { code = 'weak'; text = lead + ' That’s under 10. One reading proves nothing: the microphone may be off. Repeat it a few times with a full bladder. If it keeps showing up, take your logbook to a urologist, who can measure it with a real device.'; }
+    if (m.breaks === 1) notes.push('There was one pause mid-stream.');
   } else if (m.voidTime > 60) {
-    code = 'long'; text = num(m.voidTime, 0) + ' секунд. Это либо очень полный пузырь, либо слабый поток, по звуку не отличить. Измерь объём мерным стаканом, тогда посчитаю мл/с.';
+    code = 'long'; text = num(m.voidTime, 0) + ' seconds. Either a very full bladder or a slow flow; sound alone can’t tell which. Measure the volume with a cup and I’ll work out mL/s.';
   } else if (m.breaks === 1) {
-    code = 'hitch'; text = 'Одна пауза посреди струи. Сама по себе ничего не значит. Интересно, повторится ли.';
+    code = 'hitch'; text = 'One pause mid-stream. On its own it means nothing. Worth seeing if it repeats.';
   } else if (m.fullness >= 0.8 && m.voidTime >= 30) {
-    code = 'plateau'; text = 'Кривая длинная и плоская, без выраженного пика. Так бывает при сужении на выходе, а бывает из-за шумоподавления в диктофоне. Измерь объём, чтобы получить мл/с.';
+    code = 'plateau'; text = 'The curve is long and flat with no clear peak. That can come from a narrowing downstream, or just from your phone’s noise reduction. Measure the volume to get mL/s.';
   } else {
-    code = 'shape_ok'; text = 'Кривая поднимается, держится и спадает без провалов. Напор в мл/с не скажу, пока не укажешь объём.';
+    code = 'shape_ok'; text = 'The curve rises, holds and tapers with no dips. I can’t give you mL/s until you enter a volume.';
   }
-  if (m.ok && est) notes.push('Мл/с посчитаны без стакана, по личной калибровке: ' + cal.n + ' ' + plural(cal.n, 'замер', 'замера', 'замеров') + ', разброс ±' + pct(cal.spread) + '%.');
+  if (m.ok && est) notes.push('mL/s estimated without a cup, from your personal calibration: ' + cal.n + ' ' + plural(cal.n, 'reading', 'readings', 'readings') + ', spread ±' + pct(cal.spread) + '%.');
   if (m.ok && !est && v && cal.ready && c && !c.example && !c.saved && $('spot').checked) {
     const pred = cal.K * m.area;
-    notes.push('Калибровка предсказала бы ' + volText(pred, true) + ', в стакане ' + volText(v) + '. Расхождение ' + pct(Math.abs(pred - v) / v) + '%.');
+    notes.push('Calibration would have predicted ' + volText(pred, true) + ', your cup says ' + volText(v) + '. Off by ' + pct(Math.abs(pred - v) / v) + '%.');
   }
   return { code, text, notes };
 }
@@ -585,10 +589,10 @@ function refresh() {
 }
 function renderReadout() {
   const c = state.cur, m = c.m, v = c.v, V = VERDICT[v.code];
-  $('o-start').textContent = num(c.s * DT) + ' с';
-  $('o-end').textContent = num(c.e * DT) + ' с';
+  $('o-start').textContent = num(c.s * DT) + ' s';
+  $('o-end').textContent = num(c.e * DT) + ' s';
   $('tag').hidden = !c.example;
-  $('fname').textContent = c.example ? 'так выглядит результат · кривая синтетическая, 320 мл' : c.name;
+  $('fname').textContent = c.example ? 'sample result · synthetic curve, about 11 oz' : c.name;
   const st = $('stamp');
   st.textContent = V.stamp;
   if (st.dataset.code !== v.code) {
@@ -598,22 +602,22 @@ function renderReadout() {
   $('vtext').textContent = v.text;
   const ul = $('vnotes'); ul.hidden = !v.notes.length;
   ul.innerHTML = v.notes.map(t => '<li>' + esc(t) + '</li>').join('');
-  const need = '<small>нужен объём</small>', ap = m.est ? '≈ ' : '';
+  const need = '<small>needs a volume</small>', ap = m.est ? '≈ ' : '';
   const rows = [
-    ['Время мочеиспускания', num(m.voidTime) + ' с'],
-    ['Время потока', num(m.flowTime) + ' с'],
-    ['До максимума', m.ok ? num(m.tPeak) + ' с' : '—'],
-    ['Перерывы', String(m.breaks)],
-    ['Объём', m.volume ? ap + volText(m.volume, m.est) + (m.est ? ' <small>калибровка</small>' : '') : need],
-    ['Qmax', m.qmax != null ? ap + num(m.qmax) + ' <small>мл/с</small>' : need],
-    ['Qave', m.qave != null ? ap + num(m.qave) + ' <small>мл/с</small>' : need],
+    ['Voiding time', num(m.voidTime) + ' s'],
+    ['Flow time', num(m.flowTime) + ' s'],
+    ['Time to peak', m.ok ? num(m.tPeak) + ' s' : '—'],
+    ['Pauses', String(m.breaks)],
+    ['Volume', m.volume ? ap + volText(m.volume, m.est) + (m.est ? ' <small>calibration</small>' : '') : need],
+    ['Qmax', m.qmax != null ? ap + num(m.qmax) + ' <small>mL/s</small>' : need],
+    ['Qave', m.qave != null ? ap + num(m.qave) + ' <small>mL/s</small>' : need],
     ['Qave / Qmax', m.ok ? num(m.fullness, 2) : '—']
   ];
   $('metrics').innerHTML = rows.map(r => '<div><dt class="label">' + r[0] + '</dt><dd>' + r[1] + '</dd></div>').join('');
   const save = $('save'), note = $('save-note');
   save.hidden = c.example; note.hidden = !c.example; $('presave').hidden = c.example;
   save.disabled = c.saved || v.code === 'unheard';
-  save.textContent = c.saved ? 'Сохранено' : 'Сохранить в журнал';
+  save.textContent = c.saved ? 'Saved' : 'Save to logbook';
 }
 
 /* ---------- scene: the recorded stream replays against a target ---------- */
@@ -722,7 +726,7 @@ function drawCand(g, mood, now) {
   disc(g, cx, FLOOR - 30, 12); paint(g, CREAM);
   g.beginPath(); g.moveTo(cx - 5, FLOOR - 30); g.lineTo(cx - 1, FLOOR - 25); g.lineTo(cx + 6, FLOOR - 36); g.stroke();
   if (mood < 2) {
-    const text = mood === 0 ? 'Обещаю!' : 'Э-э…';
+    const text = mood === 0 ? 'Trust me!' : 'Uh…';
     g.save(); g.font = '700 13px "Balsamiq Sans","Comic Sans MS",sans-serif';
     const tw = g.measureText(text).width, bx = Math.min(SW - tw - 26, cx + 30), by = FLOOR - 158;
     rr(g, bx, by, tw + 20, 26, 11); paint(g, '#FFFFFF');
@@ -787,16 +791,16 @@ function drawScene(p) {
   g.strokeStyle = INK; g.lineWidth = 3;
   drawLiquid(g, levelY, now, p >= 1);
   if (mood === 2) {
-    if (scene.target === 'fire') { drawSmoke(g, levelY, now); sfx(g, TX + 88, levelY - 20, 'пшшш'); }
+    if (scene.target === 'fire') { drawSmoke(g, levelY, now); sfx(g, TX + 88, levelY - 20, 'tssss'); }
     else {
       drawBubbles(g, levelY, now);
       if (scene.target === 'cand') drawHat(g, TX + 10 + 3 * Math.sin(now / 420), levelY + 3, 0.2);
-      sfx(g, TX + 62, levelY + 34, 'буль');
+      sfx(g, TX + 62, levelY + 34, 'glub');
     }
   }
   drawStream(g, levelY, st.flow, now);
   g.save(); g.font = '400 15px "Dela Gothic One","Arial Black",sans-serif'; g.textAlign = 'left';
-  const hud = 'Залито ' + Math.min(100, Math.round(st.frac * 100)) + '%';
+  const hud = 'Flooded ' + Math.min(100, Math.round(st.frac * 100)) + '%';
   g.lineWidth = 4; g.strokeStyle = '#FFFFFF'; g.strokeText(hud, 126, 24); g.fillStyle = INK; g.fillText(hud, 126, 24); g.restore();
 }
 function stopScene() { if (scene.raf) { cancelAnimationFrame(scene.raf); scene.raf = 0; } }
@@ -815,17 +819,17 @@ function playScene() {
 function renderGame() {
   const c = state.cur, m = c.m, gs = gameState(), T = gs.T;
   let t;
-  if (!gs.ok) t = 'Мишень сухая. Нужна запись, на которой слышно струю.';
+  if (!gs.ok) t = 'The target is dry. I need a recording where the stream is audible.';
   else {
-    const have = gs.byMl ? (m.est ? 'около ' : '') + volShort(m.volume, m.est) : num(m.flowTime) + ' с потока';
-    const need = gs.byMl ? (LOC.oz ? T.oz + ' oz' : T.ml + ' мл') : T.sec + ' с потока';
+    const have = gs.byMl ? (m.est ? 'about ' : '') + volShort(m.volume, m.est) : num(m.flowTime) + ' s of flow';
+    const need = gs.byMl ? (LOC.oz ? T.oz + ' oz' : T.ml + ' mL') : T.sec + ' s of flow';
     const pc = Math.min(99, Math.floor(gs.ratio * 100));
-    if (scene.target === 'clock') t = gs.win ? 'Будильник утоплен и больше не звонит: ' + have + ' при норме ' + need + '.' : 'Будильник отзвонил своё: залито ' + pc + '%, нужно ' + need + '.';
-    else if (scene.target === 'fire') t = gs.win ? 'Костёр потушен, лес спасён: ' + have + ' при норме ' + need + '.' : 'Костёр ещё дымит: залито ' + pc + '%, нужно ' + need + '.';
-    else t = gs.win ? 'Обещалкин залит по шляпу: ' + have + ' при норме ' + need + '. Прогноз Струемера: выборы он проиграл.' : 'Обещалкин устоял: залито ' + pc + '%, нужно ' + need + '. Прогноз Струемера: второй тур.';
+    if (scene.target === 'clock') t = gs.win ? 'The alarm clock is underwater and done ringing: ' + have + ' against a par of ' + need + '.' : 'The alarm clock rang on: flooded ' + pc + '%, needs ' + need + '.';
+    else if (scene.target === 'fire') t = gs.win ? 'The campfire is out and the forest is safe: ' + have + ' against a par of ' + need + '.' : 'The campfire is still smoking: flooded ' + pc + '%, needs ' + need + '.';
+    else t = gs.win ? 'Mr. Promises is in over his hat: ' + have + ' against a par of ' + need + '. He promises it never happened.' : 'Mr. Promises is still talking: flooded ' + pc + '%, needs ' + need + '. He promises you’ll get him next time.';
   }
   $('game-text').textContent = t;
-  $('scene').setAttribute('aria-label', 'Сцена с мишенью. ' + t);
+  $('scene').setAttribute('aria-label', 'Target scene. ' + t);
 }
 
 /* ---------- chart ---------- */
@@ -853,8 +857,8 @@ function drawChart() {
     g += '<line class="grid" x1="' + f(X(t)) + '" x2="' + f(X(t)) + '" y1="' + mg.t + '" y2="' + (mg.t + ph) + '"/>';
     g += '<text class="tick" text-anchor="middle" x="' + f(X(t)) + '" y="' + (H - 9) + '">' + t + '</text>';
   }
-  g += '<text class="tick" x="' + mg.l + '" y="10">' + (inMl ? 'мл/с' : 'отн. ед.') + '</text>';
-  g += '<text class="tick" text-anchor="end" x="' + (W - mg.r) + '" y="10">секунды</text>';
+  g += '<text class="tick" x="' + mg.l + '" y="10">' + (inMl ? 'mL/s' : 'rel. units') + '</text>';
+  g += '<text class="tick" text-anchor="end" x="' + (W - mg.r) + '" y="10">seconds</text>';
   const stride = Math.max(1, Math.floor(n / (pw * 2)));
   let ghost = '', line = '', last = c.s;
   for (let i = 0; i < n; i += stride) ghost += (i ? 'L' : 'M') + f(X((i + .5) * DT)) + ' ' + f(Y(a[i] * k));
@@ -865,9 +869,9 @@ function drawChart() {
     const px = X((m.ip + .5) * DT), py = Y(top);
     const anchor = px > W - 96 ? 'end' : px < mg.l + 60 ? 'start' : 'middle';
     pk = '<circle class="peak" cx="' + f(px) + '" cy="' + f(py) + '" r="5.5"/>' +
-      '<text class="plabel" text-anchor="' + anchor + '" x="' + f(px) + '" y="' + f(py - 12) + '">' + (inMl ? 'Qmax ' + (m.est ? '≈ ' : '') + num(m.qmax) + ' мл/с' : 'пик') + '</text>';
+      '<text class="plabel" text-anchor="' + anchor + '" x="' + f(px) + '" y="' + f(py - 12) + '">' + (inMl ? 'Qmax ' + (m.est ? '≈ ' : '') + num(m.qmax) + ' mL/s' : 'peak') + '</text>';
   }
-  const label = 'Кривая потока. Время мочеиспускания ' + num(m.voidTime) + ' с, перерывов: ' + m.breaks + (inMl ? ', Qmax ' + num(m.qmax) + ' мл/с' : '') + '.';
+  const label = 'Flow curve. Voiding time ' + num(m.voidTime) + ' s, pauses: ' + m.breaks + (inMl ? ', Qmax ' + num(m.qmax) + ' mL/s' : '') + '.';
   box.innerHTML =
     '<svg width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(label) + '">' +
     '<defs><clipPath id="plot"><rect x="' + mg.l + '" y="' + mg.t + '" width="' + pw + '" height="' + ph + '"/></clipPath></defs>' + g +
@@ -885,7 +889,7 @@ function drawChart() {
     const t = (x - mg.l) / pw * T, i = Math.min(n - 1, Math.floor(t / DT)), v = a[i] * k;
     cross.setAttribute('x1', f(x)); cross.setAttribute('x2', f(x)); cross.setAttribute('visibility', 'visible');
     dot.setAttribute('cx', f(x)); dot.setAttribute('cy', f(Math.max(mg.t, Y(v)))); dot.setAttribute('visibility', 'visible');
-    tip.textContent = num(t) + ' с · ' + (inMl ? num(v) + ' мл/с' : num(v, 2));
+    tip.textContent = num(t) + ' s · ' + (inMl ? num(v) + ' mL/s' : num(v, 2));
     tip.hidden = false;
     tip.style.left = Math.min(W - tip.offsetWidth, Math.max(0, x + 10)) + 'px';
   };
@@ -905,9 +909,9 @@ function spark(curve) {
 }
 function renderStoreNote() {
   $('store-note').textContent =
-    state.mode === 'db' ? 'Журнал хранится в твоём аккаунте, виден только тебе и открывается с любого устройства. Сама запись никуда не отправляется: её разбирает браузер, в журнал идут только цифры и форма кривой.' :
-    state.mode === 'local' ? 'Журнал хранится только в этом браузере. Сама запись никуда не отправляется: её разбирает браузер.' :
-    state.mode === 'off' ? 'Журнал сейчас недоступен. Новые замеры не сохранятся, пока не обновишь страницу.' : 'Открываю журнал…';
+    state.mode === 'db' ? 'Your logbook lives in your account, is visible only to you, and opens on any device. The audio itself is never uploaded: your browser analyzes it, and only the numbers and the curve shape are saved.' :
+    state.mode === 'local' ? 'Your logbook is stored only in this browser. The audio never leaves your phone: your browser does all the analysis. No account, no ads.' :
+    state.mode === 'off' ? 'The logbook is unavailable right now. New readings won’t be saved until you reload the page.' : 'Opening the logbook…';
 }
 /* Personal K: median ml-per-amplitude-second over the latest cup measurements made at the usual spot. */
 function calibrate() {
@@ -922,14 +926,14 @@ function renderCal() {
   let cells = '';
   for (let i = 0; i < CAL_FULL; i++) cells += '<span' + (i < n ? ' class="on"' : '') + '></span>';
   bar.innerHTML = cells;
-  bar.setAttribute('aria-label', 'Замеров со стаканом: ' + n + ' из ' + CAL_FULL);
-  $('cal-count').textContent = n >= CAL_FULL ? n + ' ' + plural(n, 'замер', 'замера', 'замеров') : n + ' из ' + CAL_FULL;
-  const sp = cal.spread == null ? '' : ', разброс ±' + pct(cal.spread) + '%';
+  bar.setAttribute('aria-label', 'Cup readings: ' + n + ' of ' + CAL_FULL);
+  $('cal-count').textContent = n >= CAL_FULL ? n + ' ' + plural(n, 'reading', 'readings', 'readings') : n + ' of ' + CAL_FULL;
+  const sp = cal.spread == null ? '' : ', spread ±' + pct(cal.spread) + '%';
   $('cal-text').textContent =
-    n === 0 ? 'Струемер подстраивается под твой унитаз и твой телефон. Десять замеров со стаканом, и дальше он считает мл/с сам, без стакана. Черновая оценка появится уже после третьего.' :
-    n < CAL_MIN ? 'Замеров со стаканом: ' + n + '. ' + (CAL_MIN - n === 1 ? 'Ещё один' : 'Ещё два') + ', и появится черновая оценка мл/с без стакана.' :
-    n < CAL_FULL ? 'Черновая калибровка работает' + sp + '. Мл/с без стакана уже считаются, каждый следующий стакан делает их точнее.' :
-    'Калибровка набрана' + sp + '. Стакан больше не обязателен. Новые замеры со стаканом продолжают её уточнять.';
+    n === 0 ? 'Streamometer tunes itself to your bathroom and your phone. Ten readings with a measuring cup, and from then on it estimates mL/s by itself, no cup needed. A rough estimate kicks in after the third.' :
+    n < CAL_MIN ? 'Cup readings: ' + n + '. ' + (CAL_MIN - n === 1 ? 'One more' : 'Two more') + ', and you get a rough mL/s estimate without a cup.' :
+    n < CAL_FULL ? 'Draft calibration is live' + sp + '. You now get mL/s without a cup, and every extra cup reading sharpens it.' :
+    'Calibration complete' + sp + '. The cup is now optional. New cup readings keep refining it.';
   $('cal-warn').hidden = !(n >= CAL_MIN && cal.spread != null && cal.spread > 0.3);
 }
 function renderJournal() {
@@ -939,7 +943,7 @@ function renderJournal() {
   const es = state.entries.filter(e => e && isFinite(Number(e.ts))).sort((a, b) => b.ts - a.ts);
   if (!es.length) {
     sum.hidden = true;
-    list.innerHTML = '<li class="empty">Пока пусто. Каждый сохранённый замер встанет сюда строкой: дата, кривая, время и штамп. Через неделю будет видно, чем утро отличается от вечера.</li>';
+    list.innerHTML = '<li class="empty">Nothing here yet. Each saved reading lands here as a row: date, curve, time and stamp. Give it a week and you’ll see how mornings differ from evenings.</li>';
     return;
   }
   const fmtD = new Intl.DateTimeFormat(LOC.num, { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
@@ -947,18 +951,18 @@ function renderJournal() {
     const V = VERDICT[e.code] || VERDICT.unheard, q = e.qmax == null ? null : Number(e.qmax);
     return '<li class="row"><div class="when"><span class="date">' + esc(fmtD.format(new Date(Number(e.ts)))) + '</span><span class="slot">' + (SLOT[e.slot] || '') + '</span></div>' +
       spark(e.curve) +
-      '<div class="nums"><span>' + num(Number(e.voidTime) || 0) + ' с</span><span>' + (q != null && isFinite(q) ? (e.est ? '≈ ' : '') + num(q) + ' мл/с' : 'без объёма') + '</span></div>' +
+      '<div class="nums"><span>' + num(Number(e.voidTime) || 0) + ' s</span><span>' + (q != null && isFinite(q) ? (e.est ? '≈ ' : '') + num(q) + ' mL/s' : 'no volume') + '</span></div>' +
       '<div class="status tone-' + V.tone + '"><span aria-hidden="true">' + V.mark + '</span> ' + V.stamp + '</div>' +
-      '<button type="button" class="del" data-id="' + esc(e.id) + '">Удалить</button></li>';
+      '<button type="button" class="del" data-id="' + esc(e.id) + '">Delete</button></li>';
   }).join('');
   const rows = Object.keys(SLOT).map(s => {
     const g = es.filter(e => e.slot === s);
     const t = median(g.map(e => Number(e.voidTime)).filter(isFinite));
     const q = median(g.filter(e => e.qmax != null).map(e => Number(e.qmax)).filter(isFinite));
-    return '<tr><td>' + SLOT[s] + '</td><td>' + g.length + '</td><td>' + (t == null ? '—' : num(t) + ' с') + '</td><td>' + (q == null ? '—' : num(q) + ' мл/с') + '</td></tr>';
+    return '<tr><td>' + SLOT[s] + '</td><td>' + g.length + '</td><td>' + (t == null ? '—' : num(t) + ' s') + '</td><td>' + (q == null ? '—' : num(q) + ' mL/s') + '</td></tr>';
   }).join('');
   sum.hidden = false;
-  sum.innerHTML = '<table><thead><tr><th scope="col">Медианы</th><th scope="col">Замеров</th><th scope="col">Время</th><th scope="col">Qmax</th></tr></thead><tbody>' + rows + '</tbody></table>';
+  sum.innerHTML = '<table><thead><tr><th scope="col">Medians</th><th scope="col">Readings</th><th scope="col">Time</th><th scope="col">Qmax</th></tr></thead><tbody>' + rows + '</tbody></table>';
 }
 function readLocal() { try { const v = JSON.parse(localStorage.getItem(LS_KEY) || '[]'); return Array.isArray(v) ? v : []; } catch (_) { return []; } }
 function writeLocal() { try { localStorage.setItem(LS_KEY, JSON.stringify(state.entries)); return true; } catch (_) { return false; } }
@@ -1005,10 +1009,10 @@ async function saveCurrent() {
   } catch (err) {
     c.saved = false;
     const code = err && err.code;
-    say(code === 'invalid_argument' ? 'Не сохранилось. На этой странице у тебя нет права записи в журнал.' :
-        code === 'quota_exceeded' ? 'Не сохранилось: журнал переполнен. Удали старые замеры.' :
-        code === 'local' ? 'Не сохранилось: браузер не даёт записать данные. Проверь, не приватное ли это окно.' :
-        'Не сохранилось: журнал сейчас недоступен. Попробуй ещё раз через минуту.');
+    say(code === 'invalid_argument' ? 'Not saved. You don’t have permission to write to this logbook.' :
+        code === 'quota_exceeded' ? 'Not saved: the logbook is full. Delete some old readings.' :
+        code === 'local' ? 'Not saved: the browser won’t store data. Check whether this is a private window.' :
+        'Not saved: the logbook is unavailable right now. Try again in a minute.');
   }
   renderReadout();
 }
@@ -1016,13 +1020,13 @@ async function removeEntry(id) {
   try {
     if (state.mode === 'db') await state.col.doc(id).delete();
     else if (state.mode === 'local') { state.entries = state.entries.filter(e => e.id !== id); writeLocal(); renderJournal(); }
-  } catch (_) { say('Не удалилось: журнал сейчас недоступен.'); }
+  } catch (_) { say('Not deleted: the logbook is unavailable right now.'); }
 }
 
 /* ---------- wiring ---------- */
 async function onFile(file) {
   if (!file) return;
-  say('Слушаю запись…');
+  say('Listening…');
   try {
     const env = await decodeFile(file);
     const lm = Number(file.lastModified), now = Date.now();
@@ -1035,11 +1039,11 @@ async function onFile(file) {
     return true;
   } catch (err) {
     const k = err && err.message;
-    say(k === 'format' ? 'Не смог прочитать этот файл. Подойдут m4a, mp3, wav, ogg. Если диктофон пишет в amr или 3gp, поменяй формат в его настройках.' :
-        k === 'tooshort' ? 'Запись короче трёх секунд. Тут нечего мерить.' :
-        k === 'toolong' ? 'Запись длиннее пяти минут. Обрежь её до самого процесса.' :
-        k === 'nosupport' ? 'Этот браузер не умеет разбирать звук. Открой страницу в Chrome или Safari.' :
-        'Не получилось разобрать запись. Попробуй другой файл.');
+    say(k === 'format' ? 'I couldn’t read that file. m4a, mp3, wav and ogg work. If your recorder saves amr or 3gp, change the format in its settings.' :
+        k === 'tooshort' ? 'That recording is under three seconds. Nothing to measure.' :
+        k === 'toolong' ? 'That recording is over five minutes. Trim it down to the main event.' :
+        k === 'nosupport' ? 'This browser can’t decode audio. Open the page in Chrome or Safari.' :
+        'I couldn’t analyze that recording. Try another file.');
   }
 }
 /* ---------- live microphone (only where the page is hosted outside Claude's viewer, which keeps the mic closed) ---------- */
@@ -1058,13 +1062,13 @@ async function startRec() {
   } catch (err) {
     quit();
     const n = err && err.name;
-    say(n === 'NotAllowedError' || n === 'SecurityError' ? 'Микрофон не разрешён. Разреши этому сайту доступ к микрофону в настройках браузера и нажми ещё раз.' :
-        n === 'NotFoundError' ? 'Микрофон не найден.' : 'Не получилось включить микрофон. Запиши на диктофон и выбери файл.');
+    say(n === 'NotAllowedError' || n === 'SecurityError' ? 'Microphone access is blocked. Allow this site to use the microphone in your browser settings, then tap again.' :
+        n === 'NotFoundError' ? 'No microphone found.' : 'I couldn’t start the microphone. Use your voice recorder and choose the file instead.');
     return;
   }
   let mr;
   try { mr = new MediaRecorder(stream); }
-  catch (_) { stream.getTracks().forEach(t => t.stop()); quit(); say('Этот браузер не умеет записывать звук. Запиши на диктофон и выбери файл.'); return; }
+  catch (_) { stream.getTracks().forEach(t => t.stop()); quit(); say('This browser can’t record audio. Use your voice recorder and choose the file instead.'); return; }
   const track = stream.getAudioTracks()[0], set = track && track.getSettings ? track.getSettings() : {};
   Object.assign(rec, { on: true, stream, mr, chunks: [], ctx, an: null, t0: performance.now(), agc: set.autoGainControl === true });
   mr.ondataavailable = ev => { if (ev.data && ev.data.size) rec.chunks.push(ev.data); };
@@ -1108,8 +1112,8 @@ async function finishRec() {
   if (rec.lock) { try { rec.lock.release(); } catch (_) {} }
   Object.assign(rec, { stream: null, mr: null, ctx: null, an: null, lock: null, chunks: [] });
   $('recbox').hidden = true; $('rec').hidden = false; $('pick').hidden = false; $('rec-level').style.width = '0';
-  const ok = await onFile({ name: 'Запись с микрофона', lastModified: Date.now(), arrayBuffer: () => blob.arrayBuffer() });
-  if (ok && agc) say('Телефон не дал выключить автоусиление микрофона. Форма и время верны, а личная калибровка будет шумнее.');
+  const ok = await onFile({ name: 'Microphone recording', lastModified: Date.now(), arrayBuffer: () => blob.arrayBuffer() });
+  if (ok && agc) say('Your phone wouldn’t turn off automatic gain. Shape and timing are still right, but personal calibration will be noisier.');
 }
 function onTrim(which) {
   const c = state.cur; if (!c) return;
@@ -1122,7 +1126,7 @@ function onTrim(which) {
 }
 if (canMic) {
   $('rec').hidden = false;
-  const pick = $('pick'); pick.className = 'linkbtn'; pick.textContent = 'или выбрать готовую запись';
+  const pick = $('pick'); pick.className = 'linkbtn'; pick.textContent = 'or choose an existing recording';
   $('steps-mic').hidden = false; $('steps-file').hidden = true;
   $('hint-mic').hidden = false; $('hint-file').hidden = true;
   $('rec').addEventListener('click', startRec);
@@ -1147,8 +1151,8 @@ $('save').addEventListener('click', saveCurrent);
 $('journal').addEventListener('click', ev => {
   const b = ev.target.closest && ev.target.closest('.del'); if (!b) return;
   if (b.hasAttribute('data-armed')) { removeEntry(b.getAttribute('data-id')); return; }
-  b.setAttribute('data-armed', ''); b.textContent = 'Точно удалить?';
-  setTimeout(() => { if (b.isConnected) { b.removeAttribute('data-armed'); b.textContent = 'Удалить'; } }, 4000);
+  b.setAttribute('data-armed', ''); b.textContent = 'Really delete?';
+  setTimeout(() => { if (b.isConnected) { b.removeAttribute('data-armed'); b.textContent = 'Delete'; } }, 4000);
 });
 const zone = $('measure');
 zone.addEventListener('dragover', ev => { ev.preventDefault(); zone.classList.add('drop-on'); });
