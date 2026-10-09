@@ -64,7 +64,7 @@ EN = [
     ("Будильник <small>150 мл · 10 с</small>", "Alarm clock <small>5 oz · 10 s</small>"),
     ("Костёр <small>300 мл · 20 с</small>", "Campfire <small>10 oz · 20 s</small>"),
     ("Обещалкин <small>450 мл · 30 с</small>", "Mr. Promises <small>15 oz · 30 s</small>"),
-    ("Повторить мультик", "Replay the cartoon"),
+    ("Показать мультик", "Play the cartoon"),
     ("Мишень считается залитой по миллилитрам, если объём известен, иначе по секундам потока. Обещалкин — выдуманный кандидат, все совпадения случайны.",
      "A target counts as flooded by ounces when the volume is known, otherwise by seconds of flow. Mr. Promises is fictional. Any resemblance to your boss, your contractor or your elected officials is coincidental."),
     ("<h3>Перед сохранением</h3>", "<h3>Before you save</h3>"),
