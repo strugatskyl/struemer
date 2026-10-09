@@ -101,14 +101,24 @@ p{margin:0}
 .btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--shadow)}
 .btn.alt{background:var(--panel);color:var(--ink);font-size:15px;padding:9px 14px}
 .btn:disabled{background:var(--panel);color:var(--muted);border-style:dashed;box-shadow:none;cursor:default;transform:none}
+.cta{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.btn.big{display:inline-flex;align-items:center;justify-content:center;gap:14px;width:100%;max-width:440px;min-height:72px;font:400 clamp(22px,6.4vw,28px)/1.1 var(--font-display);padding:16px 26px;border-radius:20px;box-shadow:6px 6px 0 var(--shadow)}
+.btn.big .dot{flex:none;width:22px;height:22px;border-radius:50%;background:var(--red);border:3px solid var(--on-pee)}
+.linkbtn{font:700 16px/1.3 var(--font-body);background:none;border:0;padding:8px 0;color:var(--ink);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.linkbtn:disabled{color:var(--muted);cursor:default}
+.hint{font-size:18px;font-weight:700;max-width:52ch}
+.note a{color:inherit;font-weight:700}
+.howto summary{cursor:pointer;font-weight:700;padding:6px 0}
+.howto .steps{margin-top:10px}
+.presave{display:flex;flex-direction:column;gap:14px;border:3px solid var(--ink);border-radius:16px;padding:16px}
 .msg{font-size:15.5px;padding:10px 14px;border:2.5px solid var(--ink);border-radius:12px;background:var(--pee);color:var(--on-pee);max-width:64ch}
 .drop-on{outline:3px dashed var(--stamp);outline-offset:6px}
 .recbox{display:flex;align-items:center;gap:12px 14px;flex-wrap:wrap;padding:12px 14px;border:3px solid var(--ink);border-radius:14px}
 .recdot{flex:none;width:16px;height:16px;border-radius:50%;background:var(--red);border:2.5px solid var(--ink);animation:blink 1s steps(2) infinite}
-.rectime{font:500 20px/1 var(--font-data);font-variant-numeric:tabular-nums}
+.rectime{font:500 30px/1 var(--font-data);font-variant-numeric:tabular-nums}
 .meter{flex:1 1 140px;min-width:100px;height:20px;border:2.5px solid var(--ink);border-radius:10px;overflow:hidden}
 .meter i{display:block;height:100%;width:0;background:var(--pee)}
-.btn.stop{background:var(--red);color:var(--on-pee)}
+.btn.stop{flex:1 1 100%;background:var(--red);color:var(--on-pee);min-height:64px;font-size:22px;padding:14px 34px}
 @keyframes blink{50%{opacity:.25}}
 
 /* game scene: a self-contained illustration with its own fixed palette */
@@ -207,38 +217,15 @@ td:first-child{font:700 16px var(--font-body)}
         <circle class="feat" cx="25" cy="52" r="3.4"/><circle class="feat" cx="41" cy="52" r="3.4"/>
         <path class="smile" d="M25 61 Q33 68 41 61"/>
       </svg>
-      <p class="bubble">Раньше к напору прислушивалась мама. Теперь я. Запиши на диктофон, как журчит: построю кривую, посчитаю время и перерывы, поставлю штамп и покажу, кого ты залил. Диагнозов не ставлю.</p>
+      <p class="bubble">Раньше к напору прислушивалась мама. Теперь я. Жми жёлтую кнопку. Диагнозов не ставлю.</p>
     </div>
   </header>
 
   <section class="panel" id="measure" aria-labelledby="h-measure">
     <h2 class="sticker" id="h-measure">Новый замер</h2>
-    <ol class="steps" id="steps-file">
-      <li>Включи диктофон и положи телефон на бачок или полку рядом. Шумоподавление в диктофоне выключи, если оно есть.</li>
-      <li>Подожди две-три секунды тишины и начинай. Целься в воду: звук даёт вода, а не фаянс.</li>
-      <li>Закончил, ещё пара секунд тишины, стоп. Смывать после остановки записи.</li>
-      <li>Выбери файл записи здесь.</li>
-    </ol>
-    <ol class="steps" id="steps-mic" hidden>
-      <li>Нажми «Записать с микрофона», разреши доступ и положи телефон на бачок или полку рядом.</li>
-      <li>Подожди две-три секунды тишины и начинай. Целься в воду: звук даёт вода, а не фаянс.</li>
-      <li>Закончил, ещё пара секунд тишины, «Стоп». Смывать после.</li>
-    </ol>
-    <div class="controls">
-      <fieldset class="seg">
-        <legend class="label">Время суток</legend>
-        <div class="seg-row">
-          <label><input type="radio" name="slot" id="slot-morning" value="morning"><span>Утро</span></label>
-          <label><input type="radio" name="slot" id="slot-day" value="day"><span>День</span></label>
-          <label><input type="radio" name="slot" id="slot-evening" value="evening"><span>Вечер</span></label>
-        </div>
-      </fieldset>
-      <label class="field"><span class="label">Объём, мл</span>
-        <input id="volume" type="number" inputmode="numeric" min="20" max="1500" step="10" placeholder="если мерил">
-      </label>
-      <label class="check"><input type="checkbox" id="spot" checked> Мой туалет, телефон на обычном месте</label>
-      <button type="button" class="btn" id="rec" hidden>Записать с микрофона</button>
-      <button type="button" class="btn" id="pick">Выбрать запись</button>
+    <div class="cta">
+      <button type="button" class="btn big" id="rec" hidden><span class="dot" aria-hidden="true"></span>Записать</button>
+      <button type="button" class="btn big" id="pick">Выбрать запись</button>
       <input class="vh" id="file" type="file" tabindex="-1" aria-hidden="true" accept="audio/*,.m4a,.mp3,.wav,.aac,.ogg,.opus,.flac">
     </div>
     <div class="recbox" id="recbox" hidden>
@@ -247,7 +234,23 @@ td:first-child{font:700 16px var(--font-body)}
       <div class="meter" aria-hidden="true"><i id="rec-level"></i></div>
       <button type="button" class="btn stop" id="rec-stop">Стоп</button>
     </div>
-    <p class="note">Объём необязателен. Со стаканом получаешь мл/с сразу и заодно калибруешь Струемер под себя: после десяти стаканов он считает мл/с сам. Галочку сними, если писал не там, где обычно.</p>
+    <p class="hint" id="hint-mic" hidden>Нажми, положи телефон на бачок, пару секунд помолчи и начинай. «Стоп» жми до смыва.</p>
+    <p class="hint" id="hint-file">Запиши процесс на диктофон телефона, останови запись до смыва и выбери файл здесь.</p>
+    <p class="note" id="mic-elsewhere">Запись в одно нажатие, прямо с микрофона, работает в версии на <a href="https://strugatskyl.github.io/struemer/" target="_blank" rel="noopener">strugatskyl.github.io/struemer</a>.</p>
+    <details class="howto">
+      <summary>Как записать, чтобы вышло точнее</summary>
+      <ol class="steps" id="steps-file">
+        <li>Включи диктофон и положи телефон на бачок или полку рядом. Шумоподавление в диктофоне выключи, если оно есть.</li>
+        <li>Подожди две-три секунды тишины и начинай. Целься в воду: звук даёт вода, а не фаянс.</li>
+        <li>Закончил, ещё пара секунд тишины, стоп. Смывать после остановки записи.</li>
+        <li>Выбери файл записи здесь.</li>
+      </ol>
+      <ol class="steps" id="steps-mic" hidden>
+        <li>Нажми «Записать», разреши доступ к микрофону и положи телефон на бачок или полку рядом.</li>
+        <li>Подожди две-три секунды тишины и начинай. Целься в воду: звук даёт вода, а не фаянс.</li>
+        <li>Закончил, ещё пара секунд тишины, «Стоп». Смывать после.</li>
+      </ol>
+    </details>
     <p class="msg" id="msg" role="status" hidden></p>
   </section>
 
@@ -270,7 +273,7 @@ td:first-child{font:700 16px var(--font-body)}
             <label><input type="radio" name="target" id="target-cand" value="cand"><span>Обещалкин <small>450 мл · 30 с</small></span></label>
           </div>
         </fieldset>
-        <button type="button" class="btn alt" id="replay">Пустить струю ещё раз</button>
+        <button type="button" class="btn alt" id="replay">Повторить мультик</button>
       </div>
       <p class="note">Мишень считается залитой по миллилитрам, если объём известен, иначе по секундам потока. Обещалкин — выдуманный кандидат, все совпадения случайны.</p>
     </div>
@@ -279,6 +282,30 @@ td:first-child{font:700 16px var(--font-body)}
       <div class="stampbox"><div class="stamp" id="stamp"></div></div>
       <div class="verdict"><p id="vtext"></p><ul id="vnotes" hidden></ul></div>
     </div>
+
+    <div class="presave" id="presave" hidden>
+      <h3>Перед сохранением</h3>
+      <div class="controls">
+        <label class="field"><span class="label">Объём, мл</span>
+          <input id="volume" type="number" inputmode="numeric" min="20" max="1500" step="10" placeholder="если мерил">
+        </label>
+        <fieldset class="seg">
+          <legend class="label">Время суток</legend>
+          <div class="seg-row">
+            <label><input type="radio" name="slot" id="slot-morning" value="morning"><span>Утро</span></label>
+            <label><input type="radio" name="slot" id="slot-day" value="day"><span>День</span></label>
+            <label><input type="radio" name="slot" id="slot-evening" value="evening"><span>Вечер</span></label>
+          </div>
+        </fieldset>
+        <label class="check"><input type="checkbox" id="spot" checked> Мой туалет, телефон на обычном месте</label>
+      </div>
+      <p class="note">Объём необязателен. Если писал в мерный стакан, впиши миллилитры: посчитаю мл/с и засчитаю замер в личную калибровку. Галочку сними, если писал не там, где обычно.</p>
+      <div class="actions">
+        <button type="button" class="btn" id="save" hidden>Сохранить в журнал</button>
+        <button type="button" class="linkbtn" id="again">Новый замер</button>
+      </div>
+    </div>
+    <p class="note" id="save-note">Это пример: так выглядит результат. Свои замеры можно будет сохранять в журнал.</p>
 
     <div class="paper">
       <div class="chart" id="chart"></div>
@@ -291,10 +318,6 @@ td:first-child{font:700 16px var(--font-body)}
       </div>
     </div>
     <dl class="metrics" id="metrics"></dl>
-    <div class="actions">
-      <button type="button" class="btn" id="save" hidden>Сохранить в журнал</button>
-      <p class="note" id="save-note">Это пример на синтетической кривой. Свои замеры можно будет сохранять в журнал.</p>
-    </div>
   </section>
 
   <section class="panel flat" id="cal" aria-labelledby="h-cal">
@@ -550,7 +573,7 @@ function renderReadout() {
   $('o-start').textContent = num(c.s * DT) + ' с';
   $('o-end').textContent = num(c.e * DT) + ' с';
   $('tag').hidden = !c.example;
-  $('fname').textContent = c.example ? 'синтетическая кривая, объём 320 мл' : c.name;
+  $('fname').textContent = c.example ? 'так выглядит результат · кривая синтетическая, 320 мл' : c.name;
   const st = $('stamp');
   st.textContent = V.stamp;
   if (st.dataset.code !== v.code) {
@@ -573,7 +596,7 @@ function renderReadout() {
   ];
   $('metrics').innerHTML = rows.map(r => '<div><dt class="label">' + r[0] + '</dt><dd>' + r[1] + '</dd></div>').join('');
   const save = $('save'), note = $('save-note');
-  save.hidden = c.example; note.hidden = !c.example;
+  save.hidden = c.example; note.hidden = !c.example; $('presave').hidden = c.example;
   save.disabled = c.saved || v.code === 'unheard';
   save.textContent = c.saved ? 'Сохранено' : 'Сохранить в журнал';
 }
@@ -1040,7 +1063,7 @@ async function startRec() {
       rec.an = an; rec.buf = new Uint8Array(an.fftSize);
     } catch (_) { rec.an = null; }
   }
-  $('recbox').hidden = false; $('rec').hidden = true; $('pick').disabled = true;
+  $('recbox').hidden = false; $('rec').hidden = true; $('pick').hidden = true;
   rec.timer = setTimeout(stopRec, 180000);
   try { if (navigator.wakeLock) rec.lock = await navigator.wakeLock.request('screen'); } catch (_) {}
   tickRec();
@@ -1069,7 +1092,7 @@ async function finishRec() {
   if (rec.ctx) { const p = rec.ctx.close(); if (p && p.catch) p.catch(() => {}); }
   if (rec.lock) { try { rec.lock.release(); } catch (_) {} }
   Object.assign(rec, { stream: null, mr: null, ctx: null, an: null, lock: null, chunks: [] });
-  $('recbox').hidden = true; $('rec').hidden = false; $('pick').disabled = false; $('rec-level').style.width = '0';
+  $('recbox').hidden = true; $('rec').hidden = false; $('pick').hidden = false; $('rec-level').style.width = '0';
   const ok = await onFile({ name: 'Запись с микрофона', lastModified: Date.now(), arrayBuffer: () => blob.arrayBuffer() });
   if (ok && agc) say('Телефон не дал выключить автоусиление микрофона. Форма и время верны, а личная калибровка будет шумнее.');
 }
@@ -1083,11 +1106,15 @@ function onTrim(which) {
   c.saved = false; refresh();
 }
 if (canMic) {
-  $('rec').hidden = false; $('pick').classList.add('alt');
+  $('rec').hidden = false;
+  const pick = $('pick'); pick.className = 'linkbtn'; pick.textContent = 'или выбрать готовую запись';
   $('steps-mic').hidden = false; $('steps-file').hidden = true;
+  $('hint-mic').hidden = false; $('hint-file').hidden = true;
   $('rec').addEventListener('click', startRec);
   $('rec-stop').addEventListener('click', stopRec);
 }
+if (!window.claude) $('mic-elsewhere').hidden = true;
+$('again').addEventListener('click', () => $('measure').scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' }));
 $('pick').addEventListener('click', () => $('file').click());
 $('file').addEventListener('change', ev => { const f = ev.target.files && ev.target.files[0]; onFile(f); ev.target.value = ''; });
 document.querySelectorAll('input[name="slot"]').forEach(el => el.addEventListener('change', () => { state.slotTouched = true; }));
